@@ -453,7 +453,7 @@ function Method() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-72%"]);
   return (
-    <Section id="method" ref={undefined as never} className="relative border-t border-white/5">
+    <Section id="method" className="relative border-t border-white/5">
       <div ref={ref} className="relative h-[420vh]">
         <div className="sticky top-0 h-screen overflow-hidden">
           <div className="absolute inset-0 bb-aurora opacity-40" />
@@ -752,7 +752,7 @@ function FinalCTA({ onCTA }: { onCTA: () => void }) {
   const y = useTransform(scrollYProgress, [0, 1], [80, -80]);
 
   return (
-    <Section ref={undefined as never} className="relative py-40 border-t border-white/5 overflow-hidden">
+    <Section className="relative py-40 border-t border-white/5 overflow-hidden">
       <div ref={ref}>
         <div className="absolute inset-0 bb-aurora opacity-70" />
         <div className="absolute inset-0 bb-grid-bg opacity-30" />
