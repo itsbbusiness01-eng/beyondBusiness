@@ -76,10 +76,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "AI-powered growth studio engineering websites, web apps, automation, ads and content for ambitious founders." },
       { name: "author", content: "Beyond Business" },
       { property: "og:title", content: "Beyond Business — Your Business, Beyond Limits." },
-      { property: "og:description", content: "We don't market your business. We engineer its growth." },
+      { property: "og:description", content: "AI-powered growth studio engineering websites, web apps, automation, ads and content for ambitious founders." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Beyond Business — Your Business, Beyond Limits." },
+      { name: "twitter:description", content: "AI-powered growth studio engineering websites, web apps, automation, ads and content for ambitious founders." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ea35f73e-f156-4a66-b84c-e8fbc9e54c7e/id-preview-8a42e637--f5d29ce7-fda4-45ef-8bd3-170f5809071f.lovable.app-1779176638697.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ea35f73e-f156-4a66-b84c-e8fbc9e54c7e/id-preview-8a42e637--f5d29ce7-fda4-45ef-8bd3-170f5809071f.lovable.app-1779176638697.png" },
     ],
     links: [
       {
