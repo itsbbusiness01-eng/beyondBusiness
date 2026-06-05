@@ -112,7 +112,7 @@ function Nav({ onCTA }: { onCTA: () => void }) {
           <span className="bb-display text-base tracking-tight">BEYOND<span className="text-[#c6f208]">.</span></span>
         </a>
         <div className="hidden md:flex items-center gap-8 text-xs uppercase tracking-[0.25em] text-[#f2f2e1]/70">
-          {["Services", "Method", "Work", "Founder", "FAQ"].map((l) => (
+          {["Services", "Method", "Founder", "FAQ"].map((l) => (
             <a key={l} href={`#${l.toLowerCase()}`} className="hover:text-[#c6f208] transition-colors" data-cursor="hover">
               {l}
             </a>
@@ -493,190 +493,6 @@ function Problem() {
 
 /* ------------- services ------------- */
 
-// const services = [
-//   {
-//     icon: Globe,
-//     tag: "01",
-//     headline: "Websites That Sell, Not Just Sit",
-//     sub: "We build fast, modern websites that make you look as strong online as you are in real life — and turn visitors into engaged leads.",
-//     cta: "Explore",
-//   },
-//   {
-//     icon: TrendingUp,
-//     tag: "02",
-//     headline: "A Steady Flow of Leads",
-//     sub: "Stop waiting on referrals. We build a system that brings new inquiries to you every single month.",
-//     cta: "Get Leads",
-//   },
-//   {
-//     icon: Camera,
-//     tag: "03",
-//     headline: "Content That Builds Trust",
-//     sub: "We create and post content that keeps your brand active and respected — without you lifting a finger.",
-//     cta: "See How",
-//   },
-//   {
-//     icon: Bot,
-//     tag: "04",
-//     headline: "Automate the Busywork",
-//     sub: "We set up smart systems that handle the repeat tasks — so your team escapes manual work and WhatsApp chaos.",
-//     cta: "Automate",
-//   },
-//   {
-//     icon: BarChart2,
-//     tag: "05",
-//     headline: "Never Lose a Lead Again",
-//     sub: "We build a system that tracks every inquiry and follows up on time — so more leads turn into real sales.",
-//     cta: "Boost Sales",
-//   },
-//   {
-//     icon: Star,
-//     tag: "06",
-//     headline: "From Legacy to Leadership",
-//     sub: "We build a strong brand and the systems behind it — so your business doesn't just grow, it leads.",
-//     cta: "Scale Up",
-//   },
-// ];
-
-// // ─── ServiceCard ──────────────────────────────────────────────────────────────
-
-// function ServiceCard({ s, index }: { s: (typeof services)[number]; index: number }) {
-//   const ref = useRef<HTMLDivElement>(null);
-//   const isInView = useInView(ref, {
-//     margin: "-10% 0px -10% 0px",
-//     once: false,
-//   });
-
-//   const Icon = s.icon;
-
-//   // Staggered entrance: each card has a slightly different delay
-//   const baseDelay = index * 0.08;
-
-//   return (
-//     <motion.div
-//       ref={ref}
-//       initial={{ opacity: 0, y: 80, scale: 0.94 }}
-//       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 80, scale: 0.94 }}
-//       transition={{
-//         duration: 0.65,
-//         delay: isInView ? baseDelay : 0,
-//         ease: [0.22, 1, 0.36, 1],
-//       }}
-//       whileHover={{ scale: 1.025, y: -6 }}
-//       style={{ willChange: "transform, opacity" }}
-//       className="group relative overflow-hidden rounded-3xl bb-glass p-8 md:p-10 cursor-pointer"
-//       data-cursor="hover"
-//     >
-//       {/* Hover glow */}
-//       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#c6f208]/10 via-transparent to-transparent pointer-events-none" />
-
-//       {/* Shimmer line on hover */}
-//       <motion.div
-//         className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#c6f208]/60 to-transparent"
-//         initial={{ scaleX: 0, opacity: 0 }}
-//         whileHover={{ scaleX: 1, opacity: 1 }}
-//         transition={{ duration: 0.4 }}
-//       />
-
-//       {/* Tag + Icon row */}
-//       <div className="relative flex items-start justify-between mb-12">
-//         <div className="text-xs uppercase tracking-[0.4em] text-[#c6f208]">/ {s.tag}</div>
-//         <Icon className="h-6 w-6 text-[#f2f2e1]/30 group-hover:text-[#c6f208] transition-colors duration-300" />
-//       </div>
-
-//       {/* Content */}
-//       <h3 className="bb-display relative text-2xl md:text-3xl lg:text-4xl mb-4 leading-tight">
-//         {s.headline}
-//       </h3>
-//       <p className="bb-body relative text-[#f2f2e1]/55 leading-relaxed text-sm md:text-base">
-//         {s.sub}
-//       </p>
-
-//       {/* CTA */}
-//       <div className="relative mt-10 flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#f2f2e1]/50 group-hover:text-[#c6f208] transition-colors duration-300">
-//         {s.cta}
-//         <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-//       </div>
-//     </motion.div>
-//   );
-// }
-
-// // ─── Services Section ─────────────────────────────────────────────────────────
-
-// function Services() {
-//   const sectionRef = useRef<HTMLDivElement>(null);
-//   const headerRef = useRef<HTMLDivElement>(null);
-
-//   const { scrollYProgress } = useScroll({
-//     target: sectionRef,
-//     offset: ["start end", "end start"],
-//   });
-
-//   const rawTitleY = useTransform(scrollYProgress, [0, 1], [40, -40]);
-//   const titleY = useSpring(rawTitleY, { stiffness: 60, damping: 20 });
-
-//   const rawSubY = useTransform(scrollYProgress, [0, 1], [24, -24]);
-//   const subY = useSpring(rawSubY, { stiffness: 60, damping: 22 });
-
-//   const headerInView = useInView(headerRef, { once: false, margin: "-5% 0px" });
-
-//   return (
-//     // ✅ Plain div owns the ref, style, and scroll tracking
-//     <div
-//       ref={sectionRef}
-//       style={{
-//         paddingTop: "clamp(64px, 10vw, 160px)",
-//         paddingBottom: "clamp(64px, 10vw, 160px)",
-//       }}
-//     >
-//       {/* ✅ Section only gets the props it actually accepts */}
-//       <Section id="services" className="relative border-t border-white/5">
-//         {/* Subtle grid background */}
-//         <div className="absolute inset-0 bb-grid-bg opacity-20 pointer-events-none" />
-
-//         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-//           {/* ── Header ── */}
-//           <motion.div
-//             ref={headerRef}
-//             initial={{ opacity: 0, y: 32 }}
-//             animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
-//             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-//             className="mb-16 sm:mb-20 lg:mb-24 flex items-end justify-between flex-wrap gap-8"
-//           >
-//             <div className="flex-1 min-w-0">
-//               <motion.div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80 mb-4">
-//                 / 03 — Capabilities
-//               </motion.div>
-//               <motion.h2
-//                 style={{ y: titleY }}
-//                 className="bb-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl max-w-3xl leading-[1.05]"
-//               >
-//                 Everything You Need to Scale Your Business Beyond Limits.
-//               </motion.h2>
-//             </div>
-
-//             <motion.p
-//               style={{ y: subY }}
-//               className="bb-body max-w-xs sm:max-w-sm text-[#f2f2e1]/55 leading-relaxed text-sm md:text-base"
-//             >
-//               From your website to your sales system, we build the full engine that brings your
-//               business steady, lasting growth — under one roof.
-//             </motion.p>
-//           </motion.div>
-
-//           {/* ── Cards Grid ── */}
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
-//             {services.map((s, i) => (
-//               <ServiceCard key={s.tag} s={s} index={i} />
-//             ))}
-//           </div>
-//         </div>
-//       </Section>
-//     </div>
-//   );
-// }
-
-
 const services: any[] = [
   {
     icon: Globe,
@@ -994,7 +810,8 @@ export default function Services() {
               initial={{ opacity: 0, y: 36 }}
               animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 36 }}
               transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-16 sm:mb-20 lg:mb-24 flex items-end justify-between flex-wrap gap-8"
+              // className="mb-16 sm:mb-20 lg:mb-24 flex items-end justify-between flex-wrap gap-8"
+              className="mb-16 sm:mb-20 lg:mb-24 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 sm:gap-8"
             >
               <div className="flex-1 min-w-0">
                 {/* Eyebrow */}
@@ -1038,7 +855,8 @@ export default function Services() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={headerInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="bb-body max-w-xs sm:max-w-sm text-[#f2f2e1]/55 leading-relaxed text-sm md:text-base"
+                // className="bb-body max-w-xs sm:max-w-sm text-[#f2f2e1]/55 leading-relaxed text-sm md:text-base"
+                className="bb-body w-full sm:max-w-sm text-[#f2f2e1]/55 leading-relaxed text-sm md:text-base"
               >
                 From your website to your sales system, we build the full engine that brings your
                 business steady, lasting growth — under one roof.
