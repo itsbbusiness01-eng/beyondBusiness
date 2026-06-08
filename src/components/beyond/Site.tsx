@@ -156,7 +156,7 @@ function Hero() {
       <motion.div style={{ y: yBg, scale }} className="absolute inset-0">
         <div className="absolute inset-0 bb-grid-bg opacity-50" />
         <div className="absolute inset-0 bb-aurora" />
-        <div className="absolute left-1/2 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#c6f208]/40 to-transparent" />
+        {/* <div className="absolute left-1/2 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#c6f208]/40 to-transparent" /> */}
       </motion.div>
 
       {/* — Sticky hero content — */}
@@ -914,135 +914,6 @@ const steps = [
 ];
 
 
-// function Method() {
-//   const ref = useRef<HTMLDivElement>(null);
-
-//   const { scrollYProgress } = useScroll({
-//     target: ref,
-//     offset: ["start start", "end end"],
-//   });
-
-//   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-72%"]);
-
-//   return (
-//     <Section id="method" className="relative border-t border-white/5">
-//       <div ref={ref} className="relative h-[420vh]">
-//         <div className="sticky top-0 h-screen overflow-hidden">
-//           {/* Background */}
-//           <div className="absolute inset-0 bb-aurora opacity-40" />
-
-//           {/* ── Header block ── */}
-//           {/*
-//             Mobile  (< sm):  pt-16  — clears a typical 64px fixed nav
-//             sm      (≥640):  pt-20  — a bit more breathing room
-//             lg      (≥1024): pt-24  — comfortable on desktop
-//           */}
-//           <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 lg:pt-24">
-//             <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">
-//               / 04 — Process
-//             </div>
-
-//             <h2 className="bb-display mt-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05]">
-//               The Beyond Business Method
-//               <span className="text-[#c6f208]">™</span>
-//             </h2>
-
-//             <p className="bb-body mt-3 max-w-[18rem] sm:max-w-md text-sm sm:text-base opacity-70">
-//               A five-stage operating system for engineering compounding growth.
-//             </p>
-//           </div>
-
-//           {/* ── Cards strip ──
-//             bottom values:
-//               mobile  (< sm):  bottom-[6vh]   — low on screen, header has full top half
-//               sm      (≥640):  bottom-[8vh]   — slight lift
-//               md      (≥768):  bottom-[10vh]
-//               lg      (≥1024): bottom-[14vh]  — centred feel on landscape desktop
-//               xl      (≥1280): bottom-[18vh]  — refined vertical balance
-
-//             pl (left start of first card):
-//               kept generous so first card peeks at the right amount
-//           ── */}
-//           <motion.div
-//             style={{ x }}
-//             className="
-//               absolute
-//               bottom-[6vh] sm:bottom-[8vh] md:bottom-[10vh] lg:bottom-[14vh] xl:bottom-[18vh]
-//               left-0 flex
-//               gap-4 sm:gap-6 lg:gap-8
-//               pl-[5vw] sm:pl-[7vw] lg:pl-[10vw]
-//             "
-//           >
-//             {steps.map((s, i) => (
-//               <div
-//                 key={s.n}
-//                 className="
-//                   relative shrink-0 rounded-2xl sm:rounded-3xl bb-glass overflow-hidden
-//                   flex flex-col justify-between
-
-//                   /* Mobile: wider card, constrained height so it fits below the header */
-//                   w-[80vw]  h-[54vw]  min-h-[220px] max-h-[290px]
-
-//                   /* sm: expand a bit */
-//                   sm:w-[62vw] sm:h-[42vw] sm:min-h-[260px] sm:max-h-[360px]
-
-//                   /* md: shift toward viewport-height-based sizing */
-//                   md:w-[50vw] md:h-[44vh] md:max-h-[400px]
-
-//                   /* lg: wide landscape cards */
-//                   lg:w-[42vw] lg:max-h-[420px]
-
-//                   /* xl: settle into a refined fixed feel */
-//                   xl:w-[36vw] xl:max-h-[440px]
-
-//                   p-4 sm:p-6 md:p-7 lg:p-9
-//                 "
-//               >
-//                 {/* Top accent line */}
-//                 <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-[#c6f208] to-transparent opacity-40" />
-
-//                 {/* Top row: step number + stage indicator */}
-//                 <div className="flex items-center justify-between">
-//                   <div className="text-[#c6f208] text-[10px] sm:text-xs uppercase tracking-[0.4em]">
-//                     {s.n}
-//                   </div>
-//                   <div className="text-[#f2f2e1]/30 text-[9px] sm:text-[10px] uppercase tracking-[0.4em]">
-//                     Stage {i + 1} / {steps.length}
-//                   </div>
-//                 </div>
-
-//                 {/* Middle: title + description */}
-//                 <div className="flex-1 flex flex-col justify-center gap-2 sm:gap-3 lg:gap-4 py-2">
-//                   <h3
-//                     className="
-//                       bb-display leading-[0.92]
-//                       text-[clamp(1.5rem,5.5vw,3.2rem)]
-//                       sm:text-[clamp(1.9rem,5vw,3.8rem)]
-//                       lg:text-[clamp(2.2rem,4vw,4.4rem)]
-//                     "
-//                   >
-//                     {s.title}
-//                   </h3>
-//                   <p className="bb-body text-[13px] sm:text-sm md:text-base leading-snug sm:leading-relaxed opacity-80 max-w-xs sm:max-w-sm">
-//                     {s.desc}
-//                   </p>
-//                 </div>
-
-//                 {/* Bottom: progress bar */}
-//                 <div className="w-full h-px bg-white/10 mt-2">
-//                   <div
-//                     className="h-full bg-[#c6f208]"
-//                     style={{ width: `${((i + 1) / steps.length) * 100}%` }}
-//                   />
-//                 </div>
-//               </div>
-//             ))}
-//           </motion.div>
-//         </div>
-//       </div>
-//     </Section>
-//   );
-// }
 
 function Method() {
   const ref = useRef<HTMLDivElement>(null);
@@ -1671,53 +1542,277 @@ function FinalCTA({ onCTA }: { onCTA: () => void }) {
 
 /* ------------- Footer ------------- */
 
+// function Footer() {
+//   return (
+//     <footer className="relative border-t border-white/5 overflow-hidden">
+//       <div className="mx-auto max-w-7xl px-6 py-20">
+//         <div className="grid md:grid-cols-3 gap-12 mb-20">
+//           <div>
+//             <div className="bb-display text-3xl">BEYOND<span className="text-[#c6f208]">.</span></div>
+//             <p className="bb-body mt-4 max-w-xs">
+//               An AI-powered growth studio engineering the digital infrastructure of modern founders.
+//             </p>
+//           </div>
+//           <div>
+//             <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80 mb-6">Studio</div>
+//             <ul className="space-y-3 bb-body">
+//               {["Services", "Method", "Work", "Founder", "Careers"].map((l) => (
+//                 <li key={l}><a href="#" className="hover:text-[#c6f208] transition-colors" data-cursor="hover">{l}</a></li>
+//               ))}
+//             </ul>
+//           </div>
+//           <div>
+//             <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80 mb-6">Contact</div>
+//             <ul className="space-y-3 bb-body">
+//               <li>hello@beyondbusiness.studio</li>
+//               <li>Dubai · Bengaluru · Remote</li>
+//               <li className="flex gap-4 pt-2">
+//                 {["LinkedIn", "Instagram", "X"].map((s) => (
+//                   <a key={s} href="#" className="hover:text-[#c6f208] transition-colors" data-cursor="hover">{s}</a>
+//                 ))}
+//               </li>
+//             </ul>
+//           </div>
+//         </div>
+//         <div className="relative">
+//           <motion.h3
+//             initial={{ opacity: 0, y: 60 }}
+//             whileInView={{ opacity: 1, y: 0 }}
+//             viewport={{ once: true }}
+//             transition={{ duration: 1 }}
+//             className="bb-display text-[clamp(3rem,15vw,16rem)] leading-none bb-text-stroke"
+//           >
+//             BEYOND BUSINESS
+//           </motion.h3>
+//           <div className="absolute -top-4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#c6f208]/60 to-transparent" />
+//         </div>
+//         <div className="mt-12 flex items-center justify-between bb-body text-xs uppercase tracking-[0.3em]">
+//           <span>© {new Date().getFullYear()} Beyond Business</span>
+//           <span>Your Business, Beyond Limits.</span>
+//         </div>
+//       </div>
+//     </footer>
+//   );
+// }
+
 function Footer() {
   return (
-    <footer className="relative border-t border-white/5 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 py-20">
+    <footer className="relative border-t border-white/5 overflow-hidden bg-[#0a0a0a]">
+      {/* Animated scan line */}
+      <div className="absolute top-0 left-0 right-0 h-px overflow-hidden pointer-events-none">
+        <motion.div
+          className="h-px w-3/5 bg-gradient-to-r from-transparent via-[#c6f208]/40 to-transparent"
+          animate={{ x: ["-60%", "260%"] }}
+          transition={{ duration: 4, ease: "easeInOut", repeat: Infinity, repeatDelay: 1 }}
+        />
+      </div>
+
+      {/* Floating particles */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-[2px] h-[2px] rounded-full bg-[#c6f208]"
+            style={{
+              left: `${Math.random() * 100}%`,
+              bottom: `${Math.random() * 40}%`,
+            }}
+            animate={{
+              y: [0, -120],
+              opacity: [0, 0.6, 0],
+              scale: [0, 1, 0.3],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 5,
+              delay: Math.random() * 6,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="mx-auto max-w-7xl px-6 py-20 relative z-10">
+        {/* Top gradient rule */}
+        <motion.div
+          className="h-px mb-16 bg-gradient-to-r from-transparent via-[#c6f208]/50 to-transparent"
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        />
+
         <div className="grid md:grid-cols-3 gap-12 mb-20">
+          {/* Brand */}
           <div>
-            <div className="bb-display text-3xl">BEYOND<span className="text-[#c6f208]">.</span></div>
-            <p className="bb-body mt-4 max-w-xs">
+            <motion.div
+              className="bb-display text-3xl"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              BEYOND
+              <motion.span
+                className="text-[#c6f208]"
+                animate={{ opacity: [1, 0.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity, repeatType: "loop" }}
+              >
+                .
+              </motion.span>
+            </motion.div>
+            <p className="bb-body mt-4 max-w-xs text-white/45 text-sm leading-relaxed">
               An AI-powered growth studio engineering the digital infrastructure of modern founders.
             </p>
           </div>
-          <div>
-            <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80 mb-6">Studio</div>
+
+          {/* Studio links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <div className="text-[9px] uppercase tracking-[0.45em] text-[#c6f208]/65 mb-6 font-medium">
+              Studio
+            </div>
             <ul className="space-y-3 bb-body">
-              {["Services", "Method", "Work", "Founder", "Careers"].map((l) => (
-                <li key={l}><a href="#" className="hover:text-[#c6f208] transition-colors" data-cursor="hover">{l}</a></li>
+              {["Services", "Method", "Work", "Founder", "Careers"].map((l, i) => (
+                <li key={l}>
+                  <motion.a
+                    href="#"
+                    className="group text-sm text-white/50 hover:text-[#c6f208] transition-colors duration-200 flex items-center gap-0 hover:gap-3"
+                    data-cursor="hover"
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.15 + i * 0.05 }}
+                  >
+                    <span className="inline-block w-0 group-hover:w-3 h-px bg-[#c6f208] transition-all duration-250 flex-shrink-0" />
+                    {l}
+                  </motion.a>
+                </li>
               ))}
             </ul>
-          </div>
-          <div>
-            <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80 mb-6">Contact</div>
-            <ul className="space-y-3 bb-body">
+          </motion.div>
+
+          {/* Contact */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="text-[9px] uppercase tracking-[0.45em] text-[#c6f208]/65 mb-6 font-medium">
+              Contact
+            </div>
+            <ul className="space-y-3 bb-body text-sm text-white/45">
               <li>hello@beyondbusiness.studio</li>
               <li>Dubai · Bengaluru · Remote</li>
-              <li className="flex gap-4 pt-2">
+              <li className="flex gap-2 pt-2">
                 {["LinkedIn", "Instagram", "X"].map((s) => (
-                  <a key={s} href="#" className="hover:text-[#c6f208] transition-colors" data-cursor="hover">{s}</a>
+                  <motion.a
+                    key={s}
+                    href="#"
+                    className="text-[10px] uppercase tracking-[0.12em] text-white/45 border border-white/10 px-2.5 py-1.5 rounded-sm hover:bg-[#c6f208] hover:text-[#0a0a0a] hover:border-[#c6f208] transition-all duration-200"
+                    whileHover={{ y: -2 }}
+                    data-cursor="hover"
+                  >
+                    {s}
+                  </motion.a>
                 ))}
               </li>
             </ul>
-          </div>
+          </motion.div>
         </div>
-        <div className="relative">
-          <motion.h3
+
+        {/* Big headline */}
+        {/* <div className="relative overflow-hidden">
+          <div className="absolute -top-4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#c6f208]/60 to-transparent" />
+          <motion.div
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="bb-display text-[clamp(3rem,15vw,16rem)] leading-none bb-text-stroke"
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-baseline gap-[0.06em] leading-none"
           >
-            BEYOND BUSINESS
-          </motion.h3>
+            <span
+              className="bb-display text-[clamp(3rem,15vw,16rem)] text-white font-black tracking-tight"
+              style={{ WebkitTextStroke: "1px rgba(255,255,255,0.12)" }}
+            >
+              BEYOND
+            </span>
+            <motion.span
+              className="bb-display text-[clamp(3rem,15vw,16rem)] font-black tracking-tight text-[#000000] bg-[#c6f208] px-[0.1em]"
+              animate={{
+                boxShadow: [
+                  "0 0 0px rgba(198,242,8,0)",
+                  "0 0 60px rgba(198,242,8,0.3)",
+                  "0 0 0px rgba(198,242,8,0)",
+                ],
+              }}
+              transition={{ duration: 4, repeat: Infinity }}
+            >
+              BUSINESS
+            </motion.span>
+          </motion.div>
+        </div> */}
+
+        {/* Big headline */}
+        <div className="relative overflow-hidden">
           <div className="absolute -top-4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#c6f208]/60 to-transparent" />
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col leading-none"
+          >
+            <span
+              className="bb-display text-[clamp(3rem,15vw,16rem)] text-white font-black tracking-tight"
+              style={{ WebkitTextStroke: "1px rgba(255,255,255,0.12)" }}
+            >
+              BEYOND
+            </span>
+            {/* <motion.span
+              className="bb-display text-[clamp(3rem,15vw,16rem)] font-black tracking-tight text-[#000000] bg-[#c6f208] px-[0.1em] self-start"
+              animate={{
+                boxShadow: [
+                  "0 0 0px rgba(198,242,8,0)",
+                  "0 0 60px rgba(198,242,8,0.3)",
+                  "0 0 0px rgba(198,242,8,0)",
+                ],
+              }}
+              transition={{ duration: 4, repeat: Infinity }}
+            >
+              BUSINESS
+            </motion.span> */}
+
+            <motion.span
+              className="bb-display text-[clamp(3rem,15vw,16rem)] font-black tracking-tight !text-[#0a0a0a] bg-[#c6f208] px-[0.1em] self-start"
+              animate={{
+                boxShadow: [
+                  "0 0 0px rgba(198,242,8,0)",
+                  "0 0 60px rgba(198,242,8,0.3)",
+                  "0 0 0px rgba(198,242,8,0)",
+                ],
+              }}
+              transition={{ duration: 4, repeat: Infinity }}
+            >
+              BUSINESS
+            </motion.span>
+          </motion.div>
         </div>
-        <div className="mt-12 flex items-center justify-between bb-body text-xs uppercase tracking-[0.3em]">
-          <span>© {new Date().getFullYear()} Beyond Business</span>
-          <span>Your Business, Beyond Limits.</span>
+
+        {/* Bottom bar */}
+        <div className="mt-8 pt-5 border-t border-white/[0.06] flex items-center justify-between bb-body text-[10px] uppercase tracking-[0.3em]">
+          <span className="text-white/25">© {new Date().getFullYear()} Beyond Business</span>
+          <span className="flex items-center gap-2 text-white/25">
+            <motion.span
+              className="w-[5px] h-[5px] rounded-full bg-[#c6f208] flex-shrink-0"
+              animate={{ opacity: [1, 0.2, 1], scale: [1, 0.6, 1] }}
+              transition={{ duration: 1.8, repeat: Infinity }}
+            />
+            Your Business, Beyond Limits.
+          </span>
         </div>
       </div>
     </footer>
