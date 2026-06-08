@@ -1107,11 +1107,6 @@ function Method() {
           <div className="absolute inset-0 bb-aurora opacity-40" />
 
           {/* ── Header block ── */}
-          {/*
-            Mobile  (< sm):  pt-16  — clears a typical 64px fixed nav
-            sm      (≥640):  pt-20  — a bit more breathing room
-            lg      (≥1024): pt-24  — comfortable on desktop
-          */}
           <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 lg:pt-24">
             <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">
               / 04 — Process
@@ -1125,94 +1120,87 @@ function Method() {
             <p className="bb-body mt-3 max-w-[18rem] sm:max-w-md text-sm sm:text-base opacity-70">
               A five-stage operating system for engineering compounding growth.
             </p>
+
+            {/* ── Cards strip: inline on mobile, absolute on sm+ ──
+                On mobile we render the cards directly in document flow,
+                right below the header paragraph, so there is zero dead space.
+                On sm+ we go back to absolute positioning anchored to the bottom.
+            ── */}
+            <motion.div
+              style={{ x }}
+              className="
+                flex gap-4 sm:gap-6 lg:gap-8
+                mt-6 sm:mt-0
+                -mx-5 sm:mx-0
+                pl-5 sm:pl-0
+
+                sm:absolute
+                sm:bottom-[8vh] md:bottom-[10vh] lg:bottom-[14vh] xl:bottom-[18vh]
+                sm:left-0
+                sm:pl-[7vw] lg:pl-[10vw]
+              "
+            >
+              {steps.map((s, i) => (
+                <div
+                  key={s.n}
+                  className="
+                    relative shrink-0 rounded-2xl sm:rounded-3xl bb-glass overflow-hidden
+                    flex flex-col justify-between
+
+                    w-[78vw]  h-[56vw]  min-h-[200px] max-h-[280px]
+
+                    sm:w-[62vw] sm:h-[42vw] sm:min-h-[260px] sm:max-h-[360px]
+
+                    md:w-[50vw] md:h-[44vh] md:max-h-[400px]
+
+                    lg:w-[42vw] lg:max-h-[420px]
+
+                    xl:w-[36vw] xl:max-h-[440px]
+
+                    p-4 sm:p-6 md:p-7 lg:p-9
+                  "
+                >
+                  {/* Top accent line */}
+                  <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-[#c6f208] to-transparent opacity-40" />
+
+                  {/* Top row: step number + stage indicator */}
+                  <div className="flex items-center justify-between">
+                    <div className="text-[#c6f208] text-[10px] sm:text-xs uppercase tracking-[0.4em]">
+                      {s.n}
+                    </div>
+                    <div className="text-[#f2f2e1]/30 text-[9px] sm:text-[10px] uppercase tracking-[0.4em]">
+                      Stage {i + 1} / {steps.length}
+                    </div>
+                  </div>
+
+                  {/* Middle: title + description */}
+                  <div className="flex-1 flex flex-col justify-center gap-2 sm:gap-3 lg:gap-4 py-2">
+                    <h3
+                      className="
+                        bb-display leading-[0.92]
+                        text-[clamp(1.5rem,5.5vw,3.2rem)]
+                        sm:text-[clamp(1.9rem,5vw,3.8rem)]
+                        lg:text-[clamp(2.2rem,4vw,4.4rem)]
+                      "
+                    >
+                      {s.title}
+                    </h3>
+                    <p className="bb-body text-[13px] sm:text-sm md:text-base leading-snug sm:leading-relaxed opacity-80 max-w-xs sm:max-w-sm">
+                      {s.desc}
+                    </p>
+                  </div>
+
+                  {/* Bottom: progress bar */}
+                  <div className="w-full h-px bg-white/10 mt-2">
+                    <div
+                      className="h-full bg-[#c6f208]"
+                      style={{ width: `${((i + 1) / steps.length) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </div>
-
-          {/* ── Cards strip ──
-            bottom values:
-              mobile  (< sm):  bottom-[6vh]   — low on screen, header has full top half
-              sm      (≥640):  bottom-[8vh]   — slight lift
-              md      (≥768):  bottom-[10vh]
-              lg      (≥1024): bottom-[14vh]  — centred feel on landscape desktop
-              xl      (≥1280): bottom-[18vh]  — refined vertical balance
-
-            pl (left start of first card):
-              kept generous so first card peeks at the right amount
-          ── */}
-          <motion.div
-            style={{ x }}
-            className="
-              absolute
-              bottom-[6vh] sm:bottom-[8vh] md:bottom-[10vh] lg:bottom-[14vh] xl:bottom-[18vh]
-              left-0 flex
-              gap-4 sm:gap-6 lg:gap-8
-              pl-[5vw] sm:pl-[7vw] lg:pl-[10vw]
-            "
-          >
-            {steps.map((s, i) => (
-              <div
-                key={s.n}
-                className="
-                  relative shrink-0 rounded-2xl sm:rounded-3xl bb-glass overflow-hidden
-                  flex flex-col justify-between
-
-                  /* Mobile: wider card, constrained height so it fits below the header */
-                  w-[80vw]  h-[54vw]  min-h-[220px] max-h-[290px]
-
-                  /* sm: expand a bit */
-                  sm:w-[62vw] sm:h-[42vw] sm:min-h-[260px] sm:max-h-[360px]
-
-                  /* md: shift toward viewport-height-based sizing */
-                  md:w-[50vw] md:h-[44vh] md:max-h-[400px]
-
-                  /* lg: wide landscape cards */
-                  lg:w-[42vw] lg:max-h-[420px]
-
-                  /* xl: settle into a refined fixed feel */
-                  xl:w-[36vw] xl:max-h-[440px]
-
-                  p-4 sm:p-6 md:p-7 lg:p-9
-                "
-              >
-                {/* Top accent line */}
-                <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-[#c6f208] to-transparent opacity-40" />
-
-                {/* Top row: step number + stage indicator */}
-                <div className="flex items-center justify-between">
-                  <div className="text-[#c6f208] text-[10px] sm:text-xs uppercase tracking-[0.4em]">
-                    {s.n}
-                  </div>
-                  <div className="text-[#f2f2e1]/30 text-[9px] sm:text-[10px] uppercase tracking-[0.4em]">
-                    Stage {i + 1} / {steps.length}
-                  </div>
-                </div>
-
-                {/* Middle: title + description */}
-                <div className="flex-1 flex flex-col justify-center gap-2 sm:gap-3 lg:gap-4 py-2">
-                  <h3
-                    className="
-                      bb-display leading-[0.92]
-                      text-[clamp(1.5rem,5.5vw,3.2rem)]
-                      sm:text-[clamp(1.9rem,5vw,3.8rem)]
-                      lg:text-[clamp(2.2rem,4vw,4.4rem)]
-                    "
-                  >
-                    {s.title}
-                  </h3>
-                  <p className="bb-body text-[13px] sm:text-sm md:text-base leading-snug sm:leading-relaxed opacity-80 max-w-xs sm:max-w-sm">
-                    {s.desc}
-                  </p>
-                </div>
-
-                {/* Bottom: progress bar */}
-                <div className="w-full h-px bg-white/10 mt-2">
-                  <div
-                    className="h-full bg-[#c6f208]"
-                    style={{ width: `${((i + 1) / steps.length) * 100}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </motion.div>
         </div>
       </div>
     </Section>
