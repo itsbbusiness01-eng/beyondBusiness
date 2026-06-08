@@ -885,84 +885,6 @@ export default function Services() {
 
 /* ------------- The Beyond Method ------------- */
 
-// const steps = [
-//   {
-//     n: "01",
-//     title: "The Deep Map",
-//     desc: "We study your business, market, and gaps first — so every move is built on truth, not guesswork.",
-//   },
-//   {
-//     n: "02",
-//     title: "The Power Base",
-//     desc: "We build the website / apps  and brand that make you look as strong online as you already are offline.",
-//   },
-//   {
-//     n: "03",
-//     title: "The Inflow Engine",
-//     desc: "We switch on a steady stream of new leads — so your growth no longer waits on referrals.",
-//   },
-//   {
-//     n: "04",
-//     title: "The Conversion Core",
-//     desc: "We track and follow up every lead with smart automation — so not a single sale slips away.",
-//   },
-//   {
-//     n: "05",
-//     title: "The Market Lead",
-//     desc: "We scale the whole system and make you the name your market follows — on the road Beyond limits.",
-//   },
-// ];
-
-// function Method() {
-//   const ref = useRef<HTMLDivElement>(null);
-//   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-//   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-72%"]);
-//   return (
-//     <Section id="method" className="relative border-t border-white/5">
-//       <div ref={ref} className="relative h-[420vh]">
-//         <div className="sticky top-0 h-screen overflow-hidden">
-//           <div className="absolute inset-0 bb-aurora opacity-40" />
-//           <div className="mx-auto max-w-7xl px-6 pt-28">
-//             <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">
-//               / 04 — Process
-//             </div>
-//             <h2 className="bb-display mt-4 text-5xl md:text-7xl">
-//               The Beyond Business Method<span className="text-[#c6f208]">™</span>
-//             </h2>
-//             <p className="bb-body mt-4 max-w-md">
-//               A five-stage operating system for engineering compounding growth.
-//             </p>
-//           </div>
-//           <motion.div style={{ x }} className="absolute bottom-20 left-0 flex gap-8 pl-[10vw]">
-//             {steps.map((s, i) => (
-//               <div
-//                 key={s.n}
-//                 className="relative w-[80vw] md:w-[55vw] shrink-0 rounded-3xl bb-glass p-10 overflow-hidden"
-//               >
-//                 <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-[#c6f208] to-transparent opacity-40" />
-//                 <div className="flex items-center justify-between mb-10">
-//                   <div className="text-[#c6f208] text-sm uppercase tracking-[0.4em]">{s.n}</div>
-//                   <div className="text-[#f2f2e1]/30 text-xs uppercase tracking-[0.4em]">
-//                     Stage {i + 1} / {steps.length}
-//                   </div>
-//                 </div>
-//                 <h3 className="bb-display text-6xl md:text-8xl">{s.title}</h3>
-//                 <p className="bb-body mt-8 max-w-md text-lg">{s.desc}</p>
-//                 <div className="absolute bottom-8 left-10 right-10 h-px bg-white/10">
-//                   <div
-//                     className="h-full bg-[#c6f208]"
-//                     style={{ width: `${((i + 1) / steps.length) * 100}%` }}
-//                   />
-//                 </div>
-//               </div>
-//             ))}
-//           </motion.div>
-//         </div>
-//       </div>
-//     </Section>
-//   );
-// }
-
 const steps = [
   {
     n: "01",
@@ -991,43 +913,65 @@ const steps = [
   },
 ];
 
+
 // function Method() {
 //   const ref = useRef<HTMLDivElement>(null);
-//   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+
+//   const { scrollYProgress } = useScroll({
+//     target: ref,
+//     offset: ["start start", "end end"],
+//   });
+
 //   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-72%"]);
 
 //   return (
-//     <Section id="method" className="relative border-t border-white/5 " >
+//     <Section id="method" className="relative border-t border-white/5">
 //       <div ref={ref} className="relative h-[420vh]">
 //         <div className="sticky top-0 h-screen overflow-hidden">
 //           {/* Background */}
 //           <div className="absolute inset-0 bb-aurora opacity-40" />
 
-//           {/* ── Header block
-//               pt-0: no top padding — eyebrow sits flush against the top edge / nav
-//               sm and above restore comfortable clearance as before
-//           ── */}
-//           <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-0 pt-0 sm:pt-0 lg:pt-0">
+//           {/* ── Header block ── */}
+//           {/*
+//             Mobile  (< sm):  pt-16  — clears a typical 64px fixed nav
+//             sm      (≥640):  pt-20  — a bit more breathing room
+//             lg      (≥1024): pt-24  — comfortable on desktop
+//           */}
+//           <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 lg:pt-24">
 //             <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">
 //               / 04 — Process
 //             </div>
+
 //             <h2 className="bb-display mt-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05]">
-//               The Beyond Business Method<span className="text-[#c6f208]">™</span>
+//               The Beyond Business Method
+//               <span className="text-[#c6f208]">™</span>
 //             </h2>
-//             <p className="bb-body mt-3 max-w-sm sm:max-w-md text-sm sm:text-base opacity-70">
+
+//             <p className="bb-body mt-3 max-w-[18rem] sm:max-w-md text-sm sm:text-base opacity-70">
 //               A five-stage operating system for engineering compounding growth.
 //             </p>
 //           </div>
 
-//           {/* ── Cards strip
-//               bottom-[5vh] on sm+, but on mobile push it down a touch with
-//               bottom-[2vh] so the header has room to breathe above the cards.
-//               The extra top gap on mobile comes from reducing how high the
-//               cards sit — giving the header section more vertical space.
+//           {/* ── Cards strip ──
+//             bottom values:
+//               mobile  (< sm):  bottom-[6vh]   — low on screen, header has full top half
+//               sm      (≥640):  bottom-[8vh]   — slight lift
+//               md      (≥768):  bottom-[10vh]
+//               lg      (≥1024): bottom-[14vh]  — centred feel on landscape desktop
+//               xl      (≥1280): bottom-[18vh]  — refined vertical balance
+
+//             pl (left start of first card):
+//               kept generous so first card peeks at the right amount
 //           ── */}
 //           <motion.div
 //             style={{ x }}
-//             className="absolute bottom-[15vh] lg:bottom-[31vh] sm:bottom-[4vh] left-0 flex gap-4 sm:gap-6 lg:gap-8 pl-[6vw] sm:pl-[8vw] lg:pl-[10vw]"
+//             className="
+//               absolute
+//               bottom-[6vh] sm:bottom-[8vh] md:bottom-[10vh] lg:bottom-[14vh] xl:bottom-[18vh]
+//               left-0 flex
+//               gap-4 sm:gap-6 lg:gap-8
+//               pl-[5vw] sm:pl-[7vw] lg:pl-[10vw]
+//             "
 //           >
 //             {steps.map((s, i) => (
 //               <div
@@ -1035,12 +979,23 @@ const steps = [
 //                 className="
 //                   relative shrink-0 rounded-2xl sm:rounded-3xl bb-glass overflow-hidden
 //                   flex flex-col justify-between
-//                   w-[78vw]  h-[52vw]  min-h-[260px] max-h-[320px]
-//                   sm:w-[64vw] sm:h-[44vw] sm:max-h-[380px]
-//                   md:w-[52vw] md:h-[42vh] md:max-h-[400px]
-//                   lg:w-[44vw] lg:max-h-[420px]
-//                   xl:w-[38vw]
-//                   p-5 sm:p-7 lg:p-9
+
+//                   /* Mobile: wider card, constrained height so it fits below the header */
+//                   w-[80vw]  h-[54vw]  min-h-[220px] max-h-[290px]
+
+//                   /* sm: expand a bit */
+//                   sm:w-[62vw] sm:h-[42vw] sm:min-h-[260px] sm:max-h-[360px]
+
+//                   /* md: shift toward viewport-height-based sizing */
+//                   md:w-[50vw] md:h-[44vh] md:max-h-[400px]
+
+//                   /* lg: wide landscape cards */
+//                   lg:w-[42vw] lg:max-h-[420px]
+
+//                   /* xl: settle into a refined fixed feel */
+//                   xl:w-[36vw] xl:max-h-[440px]
+
+//                   p-4 sm:p-6 md:p-7 lg:p-9
 //                 "
 //               >
 //                 {/* Top accent line */}
@@ -1057,18 +1012,18 @@ const steps = [
 //                 </div>
 
 //                 {/* Middle: title + description */}
-//                 <div className="flex-1 flex flex-col justify-center gap-3 sm:gap-4 py-2">
+//                 <div className="flex-1 flex flex-col justify-center gap-2 sm:gap-3 lg:gap-4 py-2">
 //                   <h3
 //                     className="
-//                     bb-display leading-[0.92]
-//                     text-[clamp(1.6rem,6vw,3.5rem)]
-//                     sm:text-[clamp(2rem,5.5vw,4rem)]
-//                     lg:text-[clamp(2.4rem,4.5vw,4.5rem)]
-//                   "
+//                       bb-display leading-[0.92]
+//                       text-[clamp(1.5rem,5.5vw,3.2rem)]
+//                       sm:text-[clamp(1.9rem,5vw,3.8rem)]
+//                       lg:text-[clamp(2.2rem,4vw,4.4rem)]
+//                     "
 //                   >
 //                     {s.title}
 //                   </h3>
-//                   <p className="bb-body text-sm sm:text-base leading-snug sm:leading-relaxed opacity-80 max-w-sm">
+//                   <p className="bb-body text-[13px] sm:text-sm md:text-base leading-snug sm:leading-relaxed opacity-80 max-w-xs sm:max-w-sm">
 //                     {s.desc}
 //                   </p>
 //                 </div>
@@ -1120,87 +1075,85 @@ function Method() {
             <p className="bb-body mt-3 max-w-[18rem] sm:max-w-md text-sm sm:text-base opacity-70">
               A five-stage operating system for engineering compounding growth.
             </p>
+          </div>
 
-            {/* ── Cards strip: inline on mobile, absolute on sm+ ──
-                On mobile we render the cards directly in document flow,
-                right below the header paragraph, so there is zero dead space.
-                On sm+ we go back to absolute positioning anchored to the bottom.
-            ── */}
-            <motion.div
-              style={{ x }}
-              className="
-                flex gap-4 sm:gap-6 lg:gap-8
-                mt-6 sm:mt-0
-                -mx-5 sm:mx-0
-                pl-5 sm:pl-0
+          {/* ── Cards strip ── */}
+          <motion.div
+            style={{ x }}
+            className="
+              absolute
+              top-[38%] sm:top-auto
+              sm:bottom-[8vh] md:bottom-[10vh] lg:bottom-[14vh] xl:bottom-[18vh]
+              left-0 flex
+              gap-4 sm:gap-6 lg:gap-8
+              pl-[5vw] sm:pl-[7vw] lg:pl-[10vw]
+            "
+          >
+            {steps.map((s, i) => (
+              <div
+                key={s.n}
+                className="
+                  relative shrink-0 rounded-2xl sm:rounded-3xl bb-glass overflow-hidden
+                  flex flex-col justify-between
 
-                sm:absolute
-                sm:bottom-[8vh] md:bottom-[10vh] lg:bottom-[14vh] xl:bottom-[18vh]
-                sm:left-0
-                sm:pl-[7vw] lg:pl-[10vw]
-              "
-            >
-              {steps.map((s, i) => (
-                <div
-                  key={s.n}
-                  className="
-                    relative shrink-0 rounded-2xl sm:rounded-3xl bb-glass overflow-hidden
-                    flex flex-col justify-between
+                  /* Mobile: wider card, constrained height so it fits below the header */
+                  w-[80vw]  h-[54vw]  min-h-[220px] max-h-[290px]
 
-                    w-[78vw]  h-[56vw]  min-h-[200px] max-h-[280px]
+                  /* sm: expand a bit */
+                  sm:w-[62vw] sm:h-[42vw] sm:min-h-[260px] sm:max-h-[360px]
 
-                    sm:w-[62vw] sm:h-[42vw] sm:min-h-[260px] sm:max-h-[360px]
+                  /* md: shift toward viewport-height-based sizing */
+                  md:w-[50vw] md:h-[44vh] md:max-h-[400px]
 
-                    md:w-[50vw] md:h-[44vh] md:max-h-[400px]
+                  /* lg: wide landscape cards */
+                  lg:w-[42vw] lg:max-h-[420px]
 
-                    lg:w-[42vw] lg:max-h-[420px]
+                  /* xl: settle into a refined fixed feel */
+                  xl:w-[36vw] xl:max-h-[440px]
 
-                    xl:w-[36vw] xl:max-h-[440px]
+                  p-4 sm:p-6 md:p-7 lg:p-9
+                "
+              >
+                {/* Top accent line */}
+                <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-[#c6f208] to-transparent opacity-40" />
 
-                    p-4 sm:p-6 md:p-7 lg:p-9
-                  "
-                >
-                  {/* Top accent line */}
-                  <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-[#c6f208] to-transparent opacity-40" />
-
-                  {/* Top row: step number + stage indicator */}
-                  <div className="flex items-center justify-between">
-                    <div className="text-[#c6f208] text-[10px] sm:text-xs uppercase tracking-[0.4em]">
-                      {s.n}
-                    </div>
-                    <div className="text-[#f2f2e1]/30 text-[9px] sm:text-[10px] uppercase tracking-[0.4em]">
-                      Stage {i + 1} / {steps.length}
-                    </div>
+                {/* Top row: step number + stage indicator */}
+                <div className="flex items-center justify-between">
+                  <div className="text-[#c6f208] text-[10px] sm:text-xs uppercase tracking-[0.4em]">
+                    {s.n}
                   </div>
-
-                  {/* Middle: title + description */}
-                  <div className="flex-1 flex flex-col justify-center gap-2 sm:gap-3 lg:gap-4 py-2">
-                    <h3
-                      className="
-                        bb-display leading-[0.92]
-                        text-[clamp(1.5rem,5.5vw,3.2rem)]
-                        sm:text-[clamp(1.9rem,5vw,3.8rem)]
-                        lg:text-[clamp(2.2rem,4vw,4.4rem)]
-                      "
-                    >
-                      {s.title}
-                    </h3>
-                    <p className="bb-body text-[13px] sm:text-sm md:text-base leading-snug sm:leading-relaxed opacity-80 max-w-xs sm:max-w-sm">
-                      {s.desc}
-                    </p>
-                  </div>
-
-                  {/* Bottom: progress bar */}
-                  <div className="w-full h-px bg-white/10 mt-2">
-                    <div
-                      className="h-full bg-[#c6f208]"
-                      style={{ width: `${((i + 1) / steps.length) * 100}%` }}
-                    />
+                  <div className="text-[#f2f2e1]/30 text-[9px] sm:text-[10px] uppercase tracking-[0.4em]">
+                    Stage {i + 1} / {steps.length}
                   </div>
                 </div>
-              ))}
-            </motion.div>
-          </div>
+
+                {/* Middle: title + description */}
+                <div className="flex-1 flex flex-col justify-center gap-2 sm:gap-3 lg:gap-4 py-2">
+                  <h3
+                    className="
+                      bb-display leading-[0.92]
+                      text-[clamp(1.5rem,5.5vw,3.2rem)]
+                      sm:text-[clamp(1.9rem,5vw,3.8rem)]
+                      lg:text-[clamp(2.2rem,4vw,4.4rem)]
+                    "
+                  >
+                    {s.title}
+                  </h3>
+                  <p className="bb-body text-[13px] sm:text-sm md:text-base leading-snug sm:leading-relaxed opacity-80 max-w-xs sm:max-w-sm">
+                    {s.desc}
+                  </p>
+                </div>
+
+                {/* Bottom: progress bar */}
+                <div className="w-full h-px bg-white/10 mt-2">
+                  <div
+                    className="h-full bg-[#c6f208]"
+                    style={{ width: `${((i + 1) / steps.length) * 100}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </Section>
