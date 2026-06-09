@@ -1,12 +1,6 @@
-import { motion, useScroll, useTransform, useSpring, useMotionValue, useInView ,
-
-
-  
-} from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useInView, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState, useCallback } from "react";
-import { ArrowUpRight, Sparkles, Zap, Cpu, Megaphone, Video, Bot, Plus, Minus ,Globe, TrendingUp, Camera, BarChart2, Star
-
-} from "lucide-react";
+import { ArrowUpRight, Sparkles, Zap, Cpu, Megaphone, Video, Bot, Plus, Minus, Globe, TrendingUp, Camera, BarChart2, Star, Menu, X } from "lucide-react";
 
 /* ------------- shared bits ------------- */
 
@@ -92,11 +86,22 @@ function AnnouncementBar() {
 
 function Nav({ onCTA }: { onCTA: () => void }) {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", on);
     return () => window.removeEventListener("scroll", on);
   }, []);
+
+  const handleLinkClick = (href: string) => {
+    setMobileMenuOpen(false);
+    const el = document.querySelector(href);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <motion.nav
       initial={{ y: -40, opacity: 0 }}
@@ -118,14 +123,63 @@ function Nav({ onCTA }: { onCTA: () => void }) {
             </a>
           ))}
         </div>
-        <button
-          onClick={onCTA}
-          data-cursor="hover"
-          className="group relative overflow-hidden rounded-full bg-[#c6f208] px-5 py-2 text-xs font-semibold uppercase tracking-widest text-[#050505] transition-shadow hover:shadow-[0_0_30px_rgba(198,242,8,0.6)]"
-        >
-          Let's Talk
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onCTA}
+            data-cursor="hover"
+            className="hidden sm:block group relative overflow-hidden rounded-full bg-[#c6f208] px-5 py-2 text-xs font-semibold uppercase tracking-widest text-[#050505] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(198,242,8,0.6)]"
+          >
+            Let's Talk
+          </button>
+          
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-[#f2f2e1]/70 hover:text-[#c6f208] transition-colors"
+            aria-label="Toggle Menu"
+            data-cursor="hover"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -15, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -15, scale: 0.95 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="absolute top-[calc(100%+0.5rem)] left-0 right-0 rounded-2xl bb-glass p-5 md:hidden flex flex-col gap-4 shadow-[0_12px_40px_rgba(0,0,0,0.7)]"
+          >
+            <div className="flex flex-col gap-3 text-xs uppercase tracking-[0.25em] text-[#f2f2e1]/70">
+              {["Services", "Method", "Founder", "FAQ"].map((l) => (
+                <a
+                  key={l}
+                  href={`#${l.toLowerCase()}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick(`#${l.toLowerCase()}`);
+                  }}
+                  className="hover:text-[#c6f208] py-2.5 px-3 rounded-lg hover:bg-white/5 transition-all duration-200"
+                >
+                  {l}
+                </a>
+              ))}
+            </div>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onCTA();
+              }}
+              className="w-full text-center rounded-full bg-[#c6f208] py-3 text-xs font-semibold uppercase tracking-widest text-[#050505] transition-all hover:bg-[#c6f208]/90"
+            >
+              Let's Talk
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }
@@ -433,8 +487,8 @@ function Problem() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
 
   const questions = [
-    "Do smaller rivals get found online before you do?",
     "Does your competitor show up first, not you?",
+    "Do smaller rivals get found online before you do?",
     "Why do new buyers find others, but not you?",
     "Is a smaller name winning the leads that should be yours?",
     "When buyers search online, do they even find you?",
@@ -669,7 +723,7 @@ function ServiceCard({
             : "0 0px 0px rgba(0,0,0,0)",
         }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="group relative overflow-hidden rounded-3xl bb-glass p-8 md:p-10 cursor-pointer"
+        className="group relative overflow-hidden rounded-3xl bb-glass p-6 sm:p-8 md:p-10 cursor-pointer"
         style={{ transformStyle: "preserve-3d", willChange: "transform" }}
         data-cursor="hover"
       >
@@ -1043,7 +1097,7 @@ function Why() {
 
   return (
     <Section className="relative border-t border-white/5">
-      <div className="relative mx-auto max-w-5xl px-5 sm:px-8 lg:px-10 py-0">
+      <div className="relative mx-auto max-w-5xl px-5 sm:px-8 lg:px-10 py-16 sm:py-24">
         {/* Eyebrow */}
         <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">
           / 05 — Why Businesses Choose Us?
@@ -1360,6 +1414,50 @@ const faqs = [
 //   );
 // }
 
+/* ------------- Team ------------- */
+
+function Team() {
+  return (
+    <Section id="team" className="relative border-t border-white/5 py-20 sm:py-24 overflow-hidden">
+      <div className="absolute inset-0 bb-aurora opacity-20" />
+      <div className="relative mx-auto max-w-5xl px-5 sm:px-8 lg:px-10">
+        {/* Eyebrow */}
+        <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">
+          / 06 — Team
+        </div>
+
+        {/* Headline */}
+        <div className="mt-4 sm:mt-5 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <h2 className="bb-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.08] max-w-2xl">
+            The Minds Engineering Your Scale.
+          </h2>
+          <p className="bb-body max-w-xs text-sm sm:text-base opacity-70">
+            A cohesive squad of engineers, developers, designers, and operators dedicated to building your future infrastructure.
+          </p>
+        </div>
+
+        {/* Team Image with Black & White hover effect */}
+        <div 
+          className="relative mt-12 rounded-3xl overflow-hidden border border-white/10 bg-[#0a0a0a] group"
+          data-cursor="hover"
+        >
+          {/* Subtle overlay border for premium feel */}
+          <div className="absolute inset-0 z-10 border border-white/5 rounded-3xl pointer-events-none" />
+          
+          <img 
+            src="/assets/team.png" 
+            alt="Beyond Business Team" 
+            className="w-full h-auto object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-[1.03] transition-all duration-[900ms] ease-out"
+          />
+
+          {/* Vignette shadow */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 group-hover:opacity-35 transition-opacity duration-700 pointer-events-none" />
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
@@ -1369,7 +1467,7 @@ function FAQ() {
       className="relative py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36 border-t border-white/5"
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">/ 06 — FAQ</div>
+        <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">/ 07 — FAQ</div>
 
         <h2 className="bb-display mt-5 md:mt-6 text-5xl md:text-7xl mb-10 md:mb-12 lg:mb-16">
           Things founders ask.
@@ -1486,7 +1584,7 @@ function FinalCTA({ onCTA }: { onCTA: () => void }) {
   const y = useTransform(scrollYProgress, [0, 1], [80, -80]);
 
   return (
-    <Section className="relative py-0 border-t border-white/5 overflow-hidden">
+    <Section className="relative py-20 sm:py-32 border-t border-white/5 overflow-hidden">
       <div ref={ref}>
         <div className="absolute inset-0 bb-aurora opacity-70" />
         <div className="absolute inset-0 bb-grid-bg opacity-30" />
@@ -1514,7 +1612,7 @@ function FinalCTA({ onCTA }: { onCTA: () => void }) {
 
         <motion.div style={{ scale, y }} className="relative mx-auto max-w-7xl px-6 text-center">
           <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80 mb-8">
-            / 7 — Take The Leap
+            / 08 — Take The Leap
           </div>
 
           <h2 className="bb-display text-[clamp(2.4rem,10vw,9rem)] leading-[0.88]">
@@ -1821,8 +1919,47 @@ function Footer() {
 
 /* ------------- Calendly modal ------------- */
 
-function CalendlyModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+/* ------------- Contact Form Modal ------------- */
+
+function ContactModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (open) {
+      setFormData({ name: "", email: "", phone: "", message: "" });
+      setStatus("idle");
+      setErrors({});
+    }
+  }, [open]);
+
   if (!open) return null;
+
+  const validate = () => {
+    const tempErrors: Record<string, string> = {};
+    if (!formData.name.trim()) tempErrors.name = "Name is required";
+    if (!formData.email.trim()) {
+      tempErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      tempErrors.email = "Email is invalid";
+    }
+    if (!formData.phone.trim()) tempErrors.phone = "Phone number is required";
+    if (!formData.message.trim()) tempErrors.message = "Message is required";
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    setStatus("submitting");
+    setTimeout(() => {
+      setStatus("success");
+    }, 1500);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -1834,21 +1971,128 @@ function CalendlyModal({ open, onClose }: { open: boolean; onClose: () => void }
       <motion.div
         initial={{ scale: 0.9, opacity: 0, y: 30 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        exit={{ scale: 0.9, opacity: 0, y: 30 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-2xl rounded-3xl bb-glass p-10 text-center"
+        className="relative w-full max-w-lg rounded-3xl bb-glass p-6 sm:p-10 text-center"
       >
-        <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]">Book a Strategy Call</div>
-        <h3 className="bb-display mt-4 text-3xl md:text-5xl">Let's engineer your growth.</h3>
-        <p className="bb-body mt-4 max-w-md mx-auto">
-          30-minute call. We'll map your bottlenecks and outline your custom growth system.
-        </p>
-        <div className="mt-8 rounded-2xl border border-white/10 bg-black/40 p-12">
-          <p className="bb-body text-sm">Calendly embed slot — connect your Calendly link here.</p>
-        </div>
-        <button onClick={onClose} className="mt-6 text-xs uppercase tracking-[0.3em] text-[#f2f2e1]/60 hover:text-[#c6f208]" data-cursor="hover">
-          Close
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 text-white/50 hover:text-white transition-colors"
+          aria-label="Close modal"
+          data-cursor="hover"
+        >
+          <X className="h-5 w-5" />
         </button>
+
+        {status === "success" ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="py-12"
+          >
+            <div className="mx-auto w-16 h-16 rounded-full bg-[#c6f208]/10 flex items-center justify-center mb-6">
+              <Sparkles className="h-8 w-8 text-[#c6f208]" />
+            </div>
+            <h3 className="bb-display text-2xl md:text-3xl">Talk to you soon!</h3>
+            <p className="bb-body mt-4 max-w-sm mx-auto text-sm sm:text-base">
+              Your inquiry has been successfully transmitted. Our growth team will get back to you within 24 hours.
+            </p>
+            <button
+              onClick={onClose}
+              className="mt-8 rounded-full bg-[#c6f208] px-8 py-3 text-xs font-semibold uppercase tracking-widest text-[#050505] hover:bg-[#c6f208]/90 transition-colors"
+            >
+              Close Window
+            </button>
+          </motion.div>
+        ) : (
+          <>
+            <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]">Get in Touch</div>
+            <h3 className="bb-display mt-3 text-2xl sm:text-4xl">Let's engineer your growth.</h3>
+            <p className="bb-body mt-3 text-xs sm:text-sm text-[#f2f2e1]/60">
+              Fill in your details below and we will get back to you.
+            </p>
+
+            <form onSubmit={handleSubmit} className="mt-8 space-y-4 text-left">
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.2em] text-[#f2f2e1]/50 mb-1.5 font-medium">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Aarav Mehta"
+                  className={`w-full bg-white/5 border ${errors.name ? "border-red-500" : "border-white/10"} focus:border-[#c6f208] rounded-xl px-4 py-3 text-sm text-[#f2f2e1] outline-none transition-colors placeholder:text-white/20`}
+                />
+                {errors.name && <span className="text-red-500 text-[10px] mt-1 block">{errors.name}</span>}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[0.2em] text-[#f2f2e1]/50 mb-1.5 font-medium">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="you@company.com"
+                    className={`w-full bg-white/5 border ${errors.email ? "border-red-500" : "border-white/10"} focus:border-[#c6f208] rounded-xl px-4 py-3 text-sm text-[#f2f2e1] outline-none transition-colors placeholder:text-white/20`}
+                  />
+                  {errors.email && <span className="text-red-500 text-[10px] mt-1 block">{errors.email}</span>}
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[0.2em] text-[#f2f2e1]/50 mb-1.5 font-medium">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+91 99999 99999"
+                    className={`w-full bg-white/5 border ${errors.phone ? "border-red-500" : "border-white/10"} focus:border-[#c6f208] rounded-xl px-4 py-3 text-sm text-[#f2f2e1] outline-none transition-colors placeholder:text-white/20`}
+                  />
+                  {errors.phone && <span className="text-red-500 text-[10px] mt-1 block">{errors.phone}</span>}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.2em] text-[#f2f2e1]/50 mb-1.5 font-medium">
+                  What is slowing your growth?
+                </label>
+                <textarea
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  placeholder="Tell us about your business goals and bottlenecks..."
+                  rows={4}
+                  className={`w-full bg-white/5 border ${errors.message ? "border-red-500" : "border-white/10"} focus:border-[#c6f208] rounded-xl px-4 py-3 text-sm text-[#f2f2e1] outline-none transition-colors placeholder:text-white/20 resize-none`}
+                />
+                {errors.message && <span className="text-red-500 text-[10px] mt-1 block">{errors.message}</span>}
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={status === "submitting"}
+                  className="w-full text-center rounded-full bg-[#c6f208] py-3 text-xs font-semibold uppercase tracking-widest text-[#050505] transition-all hover:shadow-[0_0_30px_rgba(198,242,8,0.4)] disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {status === "submitting" ? (
+                    <>
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                      <span>Sending inquiry...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Let's Talk</span>
+                      <ArrowUpRight className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </>
+        )}
       </motion.div>
     </motion.div>
   );
@@ -1869,6 +2113,7 @@ export function Site() {
         <Services />
         <Method />
         <Why />
+        <Team />
         {/* <Founder />
         <Testimonials />
         <LeadMagnet /> */}
@@ -1876,7 +2121,7 @@ export function Site() {
         <FinalCTA onCTA={() => setOpen(true)} />
       </main>
       <Footer />
-      <CalendlyModal open={open} onClose={() => setOpen(false)} />
+      <ContactModal open={open} onClose={() => setOpen(false)} />
     </div>
   );
 }
