@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motio
 
 /* ─── PASTE YOUR MP3 URL HERE ─────────────────────────────── */
 const THEME_URL =
-  "https://res.cloudinary.com/dekn8nxtu/video/upload/v1780653102/Quiet_Signal_vlif9z.mp3";
+  "https://res.cloudinary.com/dekn8nxtu/video/upload/v1781069651/f1_OmC9ZbYM_oelx9r.mp3";
 /* ─────────────────────────────────────────────────────────── */
 
 /* ─────────────────────────────────────────────────────────────
