@@ -187,7 +187,7 @@ function Nav({ onCTA }: { onCTA: () => void }) {
 /* ------------- hero ------------- */
 
 
-function Hero() {
+function Hero({ onCTA }: { onCTA: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
@@ -337,6 +337,7 @@ function Hero() {
               className="pointer-events-none absolute inset-0 rounded-full border border-[#c6f208]/50"
             />
             <MagneticButton
+              onClick={onCTA}
               className={[
                 "w-full sm:w-auto",
                 // Bigger tap target on mobile
@@ -1418,7 +1419,7 @@ const faqs = [
 
 function Team() {
   return (
-    <Section id="team" className="relative border-t border-white/5 py-20 sm:py-24 overflow-hidden">
+    <Section id="team" className="relative border-t border-white/5 py-28 sm:py-32 md:py-36 overflow-hidden">
       <div className="absolute inset-0 bb-aurora opacity-20" />
       <div className="relative mx-auto max-w-5xl px-5 sm:px-8 lg:px-10">
         {/* Eyebrow */}
@@ -1436,22 +1437,51 @@ function Team() {
           </p>
         </div>
 
-        {/* Team Image with Black & White hover effect */}
-        <div 
-          className="relative mt-12 rounded-3xl overflow-hidden border border-white/10 bg-[#0a0a0a] group"
-          data-cursor="hover"
-        >
-          {/* Subtle overlay border for premium feel */}
-          <div className="absolute inset-0 z-10 border border-white/5 rounded-3xl pointer-events-none" />
-          
-          <img 
-            src="/assets/team.png" 
-            alt="Beyond Business Team" 
-            className="w-full h-auto object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-[1.03] transition-all duration-[900ms] ease-out"
-          />
+        {/* Team Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 mt-12 max-w-2xl mx-auto">
+          {[
+            {
+              name: "Sairam",
+              role: "Co-Founder — Business Growth  & Marketing Strategy",
+              bio: "Sairam does not just look at your ads and current situation. He looks at your whole business. He studies where the gaps are, builds a clear growth plan, and then puts the right people on the right problems. Strategy, marketing, operations — he connects all of it. And when the plan is ready, he makes sure the team executes it the right way.",
+              img: "/assets/sr 2.png",
+            },
+            {
+              name: "Uday",
+              role: "Full Stack Developer",
+              bio: "Uday has 10+ years of experience building websites and web applications that actually work — fast, smooth, and built to last. Custom development, animations, complex web apps — he handles it all. When the design is ready, Uday makes sure it comes to life exactly the way it was meant to.",
+              img: "/assets/uday - teamate.jpeg",
+            },
+          ].map((m, i) => (
+            <div key={m.name} className="flex flex-col group">
+              <div 
+                className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a]"
+                data-cursor="hover"
+              >
+                {/* Subtle overlay border */}
+                <div className="absolute inset-0 z-10 border border-white/5 rounded-2xl pointer-events-none" />
+                
+                <img 
+                  src={m.img} 
+                  alt={m.name} 
+                  className="w-full h-full object-cover grayscale scale-100 group-hover:scale-[1.04] transition-all duration-700 ease-out"
+                />
 
-          {/* Vignette shadow */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 group-hover:opacity-35 transition-opacity duration-700 pointer-events-none" />
+                {/* Vignette shadow */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none" />
+              </div>
+
+              <h3 className="bb-display text-lg sm:text-xl font-bold mt-4">
+                {m.name}
+              </h3>
+              <div className="text-[9px] uppercase tracking-[0.2em] text-[#c6f208] mt-1 font-semibold">
+                {m.role}
+              </div>
+              <p className="bb-body text-xs mt-2 text-[#f2f2e1]/65 leading-relaxed">
+                {m.bio}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </Section>
@@ -1464,7 +1494,7 @@ function FAQ() {
   return (
     <Section
       id="faq"
-      className="relative py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36 border-t border-white/5"
+      className="relative py-28 sm:py-32 md:py-36 lg:py-40 xl:py-44 border-t border-white/5"
     >
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">/ 07 — FAQ</div>
@@ -1955,9 +1985,20 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
     if (!validate()) return;
 
     setStatus("submitting");
+
+    // Construct a beautiful WhatsApp message
+    const formattedMessage = `Hello Beyond Business growth team! I would like to get in touch:\n\n` +
+      `*Name*: ${formData.name}\n` +
+      `*Email*: ${formData.email}\n` +
+      `*Phone*: ${formData.phone}\n\n` +
+      `*Bottleneck / Goal*:\n${formData.message}`;
+
+    const whatsappUrl = `https://wa.me/919515884262?text=${encodeURIComponent(formattedMessage)}`;
+
     setTimeout(() => {
       setStatus("success");
-    }, 1500);
+      window.open(whatsappUrl, "_blank");
+    }, 1200);
   };
 
   return (
@@ -2107,7 +2148,7 @@ export function Site() {
       <AnnouncementBar />
       <Nav onCTA={() => setOpen(true)} />
       <main>
-        <Hero />
+        <Hero onCTA={() => setOpen(true)} />
         <Trust />
         <Problem />
         <Services />
