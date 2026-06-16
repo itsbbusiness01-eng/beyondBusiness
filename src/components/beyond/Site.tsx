@@ -1442,7 +1442,7 @@ function Team() {
           {[
             {
               name: "Srinadh",
-              role: "Founder — Vision, Leadership & Business Growth",
+              role: "Founder — Vision, Leadership & Design",
               bio: "Srinadh is the driving force behind the company's vision and direction. He sees beyond day-to-day operations and focuses on where the business needs to go next. From identifying new opportunities to building strong teams and creating sustainable growth strategies, he ensures every part of the business moves with purpose. He brings together people, processes, and innovation to turn ideas into results, while making sure the company stays focused on delivering value to its clients and achieving long-term success.",
               img: "/assets/srinadh.png",
             },
