@@ -1419,7 +1419,7 @@ const faqs = [
 
 function Team() {
   return (
-    <Section id="team" className="relative border-t border-white/5 py-28 sm:py-32 md:py-36 overflow-hidden">
+    <Section id="team" className="relative border-t border-white/5 pt-28 sm:pt-32 md:pt-36 pb-12 sm:pb-16 md:pb-20 overflow-hidden">
       <div className="absolute inset-0 bb-aurora opacity-20" />
       <div className="relative mx-auto max-w-5xl px-5 sm:px-8 lg:px-10">
         {/* Eyebrow */}
@@ -1438,8 +1438,14 @@ function Team() {
         </div>
 
         {/* Team Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 mt-12 max-w-2xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 mt-12 max-w-5xl mx-auto">
           {[
+            {
+              name: "Srinadh",
+              role: "Founder — Vision, Leadership & Business Growth",
+              bio: "Srinadh is the driving force behind the company's vision and direction. He sees beyond day-to-day operations and focuses on where the business needs to go next. From identifying new opportunities to building strong teams and creating sustainable growth strategies, he ensures every part of the business moves with purpose. He brings together people, processes, and innovation to turn ideas into results, while making sure the company stays focused on delivering value to its clients and achieving long-term success.",
+              img: "/assets/srinadh.png",
+            },
             {
               name: "Sairam",
               role: "Co-Founder — Business Growth  & Marketing Strategy",
@@ -1494,7 +1500,7 @@ function FAQ() {
   return (
     <Section
       id="faq"
-      className="relative py-28 sm:py-32 md:py-36 lg:py-40 xl:py-44 border-t border-white/5"
+      className="relative pt-12 sm:pt-16 md:pt-20 pb-28 sm:pb-32 md:pb-36 lg:pb-40 xl:pb-44 border-t border-white/5"
     >
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">/ 07 — FAQ</div>
