@@ -1098,7 +1098,7 @@ function Why() {
 
   return (
     <Section className="relative border-t border-white/5">
-      <div className="relative mx-auto max-w-5xl px-5 sm:px-8 lg:px-10 py-16 sm:py-24">
+      <div className="relative mx-auto max-w-5xl px-5 sm:px-8 lg:px-10 pt-16 sm:pt-24 pb-12 sm:pb-16">
         {/* Eyebrow */}
         <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">
           / 05 — Why Businesses Choose Us?
@@ -1419,7 +1419,7 @@ const faqs = [
 
 function Team() {
   return (
-    <Section id="team" className="relative border-t border-white/5 pt-28 sm:pt-32 md:pt-36 pb-12 sm:pb-16 md:pb-20 overflow-hidden">
+    <Section id="team" className="relative border-t border-white/5 py-12 sm:py-16 md:py-20 overflow-hidden">
       <div className="absolute inset-0 bb-aurora opacity-20" />
       <div className="relative mx-auto max-w-5xl px-5 sm:px-8 lg:px-10">
         {/* Eyebrow */}
