@@ -250,7 +250,7 @@ function Hero({ onCTA }: { onCTA: () => void }) {
     <section
       ref={ref}
       id="top"
-      className="relative min-h-[100vh] xl:min-h-[120vh] overflow-hidden bb-noise"
+      className="relative md:min-h-[100vh] xl:min-h-[120vh] overflow-hidden bb-noise"
     >
       {/* — Background layer — */}
       <motion.div style={{ y: yBg, scale }} className="absolute inset-0">
@@ -263,10 +263,10 @@ function Hero({ onCTA }: { onCTA: () => void }) {
       <motion.div
         style={{ opacity: fade, filter: blur }}
         className={[
-          "sticky top-0 flex min-h-[100vh] flex-col items-center justify-center text-center",
+          "sticky top-0 flex md:min-h-[100vh] flex-col items-center justify-center text-center",
           "px-5 sm:px-8 md:px-12 lg:px-16",
-          "pt-20 sm:pt-24 md:pt-24 lg:pt-28",
-          "pb-10 sm:pb-12 md:pb-16",
+          "pt-36 sm:pt-40 md:pt-24 lg:pt-28",
+          "pb-20 sm:pb-24 md:pb-16",
         ].join(" ")}
       >
 
