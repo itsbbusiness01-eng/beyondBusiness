@@ -273,8 +273,10 @@ function Hero({ onCTA }: { onCTA: () => void }) {
 
 
         {/* — Headline — */}
-        <h1 className="bb-display text-[clamp(2.2rem,8.5vw,8.5rem)]">
-          <div className="flex flex-wrap justify-center gap-x-3 sm:gap-x-4">
+        <h1 className="bb-display text-[clamp(2.4rem,11vw,3.5rem)] md:text-[clamp(3.5rem,5.5vw,5.5rem)] flex flex-wrap justify-center md:gap-y-2">
+          
+          {/* DO YOU WANT */}
+          <div className="flex flex-wrap justify-center gap-x-3 sm:gap-x-4 w-full md:w-auto md:mr-3 lg:mr-4">
             {words1.map((w, i) => (
               <motion.span
                 key={i}
@@ -288,7 +290,8 @@ function Hero({ onCTA }: { onCTA: () => void }) {
             ))}
           </div>
 
-          <div className="flex flex-wrap justify-center gap-x-3 sm:gap-x-4">
+          {/* TO SCALE */}
+          <div className="flex flex-wrap justify-center gap-x-3 sm:gap-x-4 w-full md:w-auto md:mr-3 lg:mr-4">
             {words2.map((w, i) => (
               <motion.span
                 key={i}
@@ -302,7 +305,8 @@ function Hero({ onCTA }: { onCTA: () => void }) {
             ))}
           </div>
 
-          <div className="mt-1.5 sm:mt-2 flex flex-wrap justify-center gap-x-3 sm:gap-x-4">
+          {/* YOUR */}
+          <div className="flex flex-wrap justify-center gap-x-3 sm:gap-x-4 w-full md:w-auto">
             {words3.map((w, i) => (
               <motion.span
                 key={i}
@@ -316,7 +320,8 @@ function Hero({ onCTA }: { onCTA: () => void }) {
             ))}
           </div>
 
-          <div className="flex flex-wrap justify-center gap-x-3 sm:gap-x-4">
+          {/* BUSINESS? */}
+          <div className="flex flex-wrap justify-center gap-x-3 sm:gap-x-4 w-full">
             {words4.map((w, i) => (
               <motion.span
                 key={i}
@@ -343,7 +348,7 @@ function Hero({ onCTA }: { onCTA: () => void }) {
             "px-2 sm:px-0",
           ].join(" ")}
         >
-          Scale your business with the team that has scaled brands to over ₹10 Cr+ in combined annual revenue.
+          Learn from the team that has scaled a portfolio to over $250m+ in annual revenue.
         </motion.p>
 
         {/* — CTA buttons — */}
@@ -377,7 +382,7 @@ function Hero({ onCTA }: { onCTA: () => void }) {
                 "text-sm sm:text-base font-semibold tracking-wide",
               ].join(" ")}
             >
-              <span>I AM READY TO SCALE</span>
+              <span>I'M READY TO SCALE</span>
               <ArrowUpRight className="h-4 w-4 ml-1.5 shrink-0" />
             </MagneticButton>
           </motion.div>
@@ -453,7 +458,7 @@ function Trust({ onCTA }: { onCTA: () => void }) {
   ];
 
   return (
-    <Section className="relative border-t border-white/5 py-8 sm:py-20 md:py-12 lg:py-16">
+    <Section className="relative border-t border-white/5 pt-16 sm:pt-24 md:pt-32 pb-16 sm:pb-24 lg:pb-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 md:px-10 lg:px-6">
         {/* — Header row — */}
         <div className="mb-10 sm:mb-12 md:mb-16 flex items-end justify-between flex-wrap gap-5 sm:gap-6">
@@ -529,7 +534,7 @@ function Problem({ onCTA }: { onCTA: () => void }) {
   ];
 
   return (
-    <Section className="relative py-10 sm:py-10 md:py-12 lg:py-10 overflow-hidden">
+    <Section className="relative pt-16 sm:pt-24 md:pt-32 pb-16 sm:pb-24 lg:pb-32 overflow-hidden">
       <motion.div
         style={{ opacity: useTransform(scrollYProgress, [0, 0.5], [0.2, 0.6]) }}
         className="absolute inset-0 bb-aurora"
@@ -1546,7 +1551,7 @@ function FAQ() {
   return (
     <Section
       id="faq"
-      className="relative pt-12 sm:pt-16 md:pt-20 pb-28 sm:pb-32 md:pb-36 lg:pb-40 xl:pb-44 border-t border-white/5"
+      className="relative pt-16 sm:pt-24 md:pt-32 pb-28 sm:pb-32 md:pb-36 lg:pb-40 xl:pb-44 border-t border-white/5"
     >
       <div className="mx-auto max-w-5xl px-6">
 
