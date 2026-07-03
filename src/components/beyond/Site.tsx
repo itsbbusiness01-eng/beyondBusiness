@@ -263,11 +263,10 @@ function Hero({ onCTA }: { onCTA: () => void }) {
       <motion.div
         style={{ opacity: fade, filter: blur }}
         className={[
-          "sticky top-0 flex min-h-screen flex-col items-center justify-center text-center",
+          "sticky top-0 flex min-h-[100vh] flex-col items-center justify-center text-center",
           "px-5 sm:px-8 md:px-12 lg:px-16",
-          "pt-20 sm:pt-22 md:pt-24 lg:pt-28",
-          // ↓ Tighter bottom on mobile, breathes on larger screens
-          "pb-10 sm:pb-14 md:pb-16",
+          "pt-20 sm:pt-24 md:pt-24 lg:pt-28",
+          "pb-10 sm:pb-12 md:pb-16",
         ].join(" ")}
       >
 
