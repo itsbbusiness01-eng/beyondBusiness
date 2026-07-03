@@ -51,10 +51,10 @@ function MagneticButton({
       onMouseLeave={onLeave}
       onClick={onClick}
       style={{ x: sx, y: sy }}
-      className={`group relative inline-flex items-center gap-2 rounded-full px-7 py-4 text-sm font-semibold uppercase tracking-widest transition-all duration-300 ${base} ${className}`}
+      className={`group relative inline-flex items-center justify-center gap-2 rounded-full px-7 py-4 text-sm font-semibold uppercase tracking-widest transition-all duration-300 ${base} ${className}`}
       data-cursor="hover"
     >
-      <span className="relative z-10 flex items-center gap-2">{children}</span>
+      <span className="relative z-10 flex items-center justify-center gap-2 w-full">{children}</span>
     </motion.button>
   );
 }
@@ -297,7 +297,7 @@ function Hero({ onCTA }: { onCTA: () => void }) {
                 initial={{ y: 120, opacity: 0, rotateX: 60 }}
                 animate={{ y: 0, opacity: 1, rotateX: 0 }}
                 transition={{ duration: 1, delay: 0.5 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className="inline-block bb-text-stroke"
+                className={`inline-block ${w === "SCALE" ? "text-[#c6f208]" : "bb-text-stroke"}`}
               >
                 {w}
               </motion.span>
@@ -438,16 +438,9 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
 }
 
 function Trust({ onCTA }: { onCTA: () => void }) {
-  const logos = [
-    "A to Z Networks",
-    "Sniffix",
-    "Sreenidhi Soft",
-    "Northwave",
-    "Helio Labs",
-    "Forma",
-    "Atlas&Co",
-    "Velora",
-    "Nimbus",
+  const baseLogos = [
+    <img key="sniffix" src="/assets/sniffix_logobg.png" alt="Sniffix" className="h-10 sm:h-12 object-contain opacity-50 hover:opacity-100 transition-opacity duration-300 brightness-0 invert" />,
+    <img key="elevatech" src="/assets/elevatech_logob.png" alt="Elevatech" className="h-16 sm:h-24 lg:h-32 object-contain opacity-100 transition-opacity duration-300" />,
   ];
   const metrics = [
     { label: "Average Revenue Growth", value: 312, suffix: "%" },
@@ -486,17 +479,15 @@ function Trust({ onCTA }: { onCTA: () => void }) {
         </div>
 
         {/* — Logo marquee — */}
-        <div className="mt-10 sm:mt-12 md:mt-16 overflow-hidden">
-          <div className="flex bb-marquee">
-            {logos.concat(logos).map((l, i) => (
-              <div
-                key={i}
-                className="mx-8 sm:mx-10 md:mx-12 shrink-0 text-xl sm:text-2xl md:text-3xl font-semibold text-[#f2f2e1]/30 hover:text-[#c6f208] transition-colors"
-              >
-                {l}
-              </div>
-            ))}
-          </div>
+        <div className="relative mt-12 sm:mt-16 md:mt-20 flex justify-center flex-wrap gap-8 sm:gap-12 md:gap-16 px-4">
+          {baseLogos.map((l, i) => (
+            <div
+              key={i}
+              className="shrink-0 flex items-center justify-center"
+            >
+              {l}
+            </div>
+          ))}
         </div>
 
         {/* — CTA — */}
@@ -1436,16 +1427,26 @@ const faqs = [
 //   );
 // }
 
-function TeamCard({ m }: { m: { name: string, role: string, bio: string, img: string } }) {
+function TeamCard({ m, index }: { m: { name: string, role: string, bio: string, img: string }; index: number }) {
   return (
     <div className="team-flip-card relative aspect-square w-full cursor-pointer" style={{ perspective: "1000px" }}>
       <div 
         className="team-flip-inner relative w-full h-full transition-transform duration-700 ease-in-out" 
-        style={{ transformStyle: "preserve-3d" }}
+        style={{ transformStyle: "preserve-3d", animationDelay: `${index * 1.5}s` }}
       >
         <style dangerouslySetInnerHTML={{__html: `
           .team-flip-card:hover > .team-flip-inner { transform: rotateY(180deg); }
           .team-flip-card:active > .team-flip-inner { transform: rotateY(180deg); }
+          @media (max-width: 768px) {
+            @keyframes autoFlip {
+              0%, 25% { transform: rotateY(0deg); }
+              40%, 85% { transform: rotateY(180deg); }
+              100% { transform: rotateY(0deg); }
+            }
+            .team-flip-inner {
+              animation: autoFlip 8s infinite ease-in-out;
+            }
+          }
         `}} />
         
         {/* Front Face */}
@@ -1535,8 +1536,8 @@ function Team() {
               bio: "Hi, I'm Maneesh Reddy, Customer Experience Manager at Beyond Business. I make sure every customer interaction leaves a lasting impression. That's how referrals and word-of-mouth happen naturally. I've already grown our own NPS score from 35 to 67, and I bring that same customer-first approach to your business.",
               img: "/assets/maneesh.png",
             },
-          ].map((m) => (
-            <TeamCard key={m.name} m={m} />
+          ].map((m, i) => (
+            <TeamCard key={m.name} m={m} index={i} />
           ))}
         </div>
       </div>
