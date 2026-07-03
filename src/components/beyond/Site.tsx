@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useInView, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState, useCallback } from "react";
-import { ArrowUpRight, Sparkles, Zap, Cpu, Megaphone, Video, Bot, Plus, Minus, Globe, TrendingUp, Camera, BarChart2, Star, Menu, X } from "lucide-react";
+import { ArrowUpRight, Sparkles, Zap, Cpu, Megaphone, Video, Bot, Plus, Minus, Globe, TrendingUp, Camera, BarChart2, Star, Menu, X, Check, ChevronLeft, ChevronRight } from "lucide-react";
 
 /* ------------- shared bits ------------- */
 
@@ -87,18 +87,49 @@ function AnnouncementBar() {
 function Nav({ onCTA }: { onCTA: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 30);
-    window.addEventListener("scroll", on);
-    return () => window.removeEventListener("scroll", on);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 30);
+      
+      const sections = ["services", "method", "about-us", "faq"];
+      let current = "";
+      
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 150 && rect.bottom >= 150) {
+            current = section;
+          }
+        }
+      }
+      setActiveSection(current);
+    };
+    
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const handleLinkClick = (href: string) => {
     setMobileMenuOpen(false);
-    const el = document.querySelector(href);
+    
+    if (href === "#top") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    
+    const id = href.replace("#", "");
+    const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      const offset = 100;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - offset;
+      window.scrollTo({
+         top: offsetPosition,
+         behavior: "smooth"
+      });
     }
   };
 
@@ -107,21 +138,36 @@ function Nav({ onCTA }: { onCTA: () => void }) {
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.2, duration: 0.8 }}
-      className={`fixed left-1/2 z-50 -translate-x-1/2 transition-all duration-500 ${
+      className={`fixed left-1/2 z-[999] -translate-x-1/2 transition-all duration-500 ${
         scrolled ? "top-3 w-[min(94%,1100px)]" : "top-6 w-[min(96%,1240px)]"
       }`}
     >
       <div className={`flex items-center justify-between rounded-full bb-glass px-6 py-3 ${scrolled ? "shadow-[0_8px_40px_rgba(0,0,0,0.6)]" : ""}`}>
-        <a href="#top" className="flex items-center gap-2" data-cursor="hover">
+        <a 
+          href="#top" 
+          onClick={(e) => { e.preventDefault(); handleLinkClick("#top"); }}
+          className="flex items-center gap-2" 
+          data-cursor="hover"
+        >
           <div className="h-2 w-2 rounded-full bg-[#c6f208] shadow-[0_0_12px_#c6f208]" />
           <span className="bb-display text-base tracking-tight">BEYOND<span className="text-[#c6f208]">.</span></span>
         </a>
         <div className="hidden md:flex items-center gap-8 text-xs uppercase tracking-[0.25em] text-[#f2f2e1]/70">
-          {["Services", "Method", "Founder", "FAQ"].map((l) => (
-            <a key={l} href={`#${l.toLowerCase()}`} className="hover:text-[#c6f208] transition-colors" data-cursor="hover">
-              {l}
-            </a>
-          ))}
+          {["Services", "Method", "About Us", "FAQ"].map((l) => {
+            const id = l.toLowerCase().replace(' ', '-');
+            const isActive = activeSection === id;
+            return (
+              <a 
+                key={l} 
+                href={`#${id}`} 
+                onClick={(e) => { e.preventDefault(); handleLinkClick(`#${id}`); }}
+                className={`${isActive ? "text-[#c6f208]" : "hover:text-[#c6f208]"} transition-colors`} 
+                data-cursor="hover"
+              >
+                {l}
+              </a>
+            );
+          })}
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -154,13 +200,13 @@ function Nav({ onCTA }: { onCTA: () => void }) {
             className="absolute top-[calc(100%+0.5rem)] left-0 right-0 rounded-2xl bb-glass p-5 md:hidden flex flex-col gap-4 shadow-[0_12px_40px_rgba(0,0,0,0.7)]"
           >
             <div className="flex flex-col gap-3 text-xs uppercase tracking-[0.25em] text-[#f2f2e1]/70">
-              {["Services", "Method", "Founder", "FAQ"].map((l) => (
+              {["Services", "Method", "About Us", "FAQ"].map((l) => (
                 <a
                   key={l}
-                  href={`#${l.toLowerCase()}`}
+                  href={`#${l.toLowerCase().replace(' ', '-')}`}
                   onClick={(e) => {
                     e.preventDefault();
-                    handleLinkClick(`#${l.toLowerCase()}`);
+                    handleLinkClick(`#${l.toLowerCase().replace(' ', '-')}`);
                   }}
                   className="hover:text-[#c6f208] py-2.5 px-3 rounded-lg hover:bg-white/5 transition-all duration-200"
                 >
@@ -195,10 +241,10 @@ function Hero({ onCTA }: { onCTA: () => void }) {
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const blur = useTransform(scrollYProgress, [0, 1], ["0px", "12px"]);
 
-  const words1 = "READY TO SCALE".split(" ");
-  const words2 = "YOUR BUSINESS.".split(" ");
-  const words3 = "TO THE".split(" ");
-  const words4 = "BEYOND LEVEL?".split(" ");
+  const words1 = "DO YOU WANT".split(" ");
+  const words2 = "TO SCALE".split(" ");
+  const words3 = "YOUR".split(" ");
+  const words4 = "BUSINESS?".split(" ");
 
   return (
     <section
@@ -224,20 +270,7 @@ function Hero({ onCTA }: { onCTA: () => void }) {
           "pb-10 sm:pb-14 md:pb-16",
         ].join(" ")}
       >
-        {/* — Badge — */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className={[
-            "inline-flex items-center gap-2 rounded-full",
-            "border border-[#c6f208]/30 bg-[#c6f208]/5",
-            "px-4 py-1.5 text-[10px] uppercase tracking-[0.4em] text-[#c6f208]",
-            "mb-6 sm:mb-7 md:mb-8",
-          ].join(" ")}
-        >
-          <Sparkles className="h-3 w-3" /> AI-Powered Growth Studio
-        </motion.div>
+
 
         {/* — Headline — */}
         <h1 className="bb-display text-[clamp(2.2rem,8.5vw,8.5rem)]">
@@ -310,8 +343,7 @@ function Hero({ onCTA }: { onCTA: () => void }) {
             "px-2 sm:px-0",
           ].join(" ")}
         >
-          You built a strong business the traditional way. We make it just as strong online — and
-          take your growth to the next level.
+          Scale your business with the team that has scaled brands to over ₹10 Cr+ in combined annual revenue.
         </motion.p>
 
         {/* — CTA buttons — */}
@@ -345,20 +377,10 @@ function Hero({ onCTA }: { onCTA: () => void }) {
                 "text-sm sm:text-base font-semibold tracking-wide",
               ].join(" ")}
             >
-              {/* Short label on xs, full label on sm+ */}
-              <span className="sm:hidden">Scale My Business — Free&nbsp;🚀</span>
-              <span className="hidden sm:inline">Take My Business Beyond For Free!</span>
+              <span>I AM READY TO SCALE</span>
               <ArrowUpRight className="h-4 w-4 ml-1.5 shrink-0" />
             </MagneticButton>
           </motion.div>
-
-          {/* Ghost CTA — full-width on mobile too */}
-          <MagneticButton
-            variant="ghost"
-            className={["w-full sm:w-auto", "py-4 sm:py-3", "text-sm sm:text-base"].join(" ")}
-          >
-            Explore Growth System
-          </MagneticButton>
         </motion.div>
 
         {/* — Scroll indicator — */}
@@ -411,10 +433,11 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   );
 }
 
-function Trust() {
+function Trust({ onCTA }: { onCTA: () => void }) {
   const logos = [
     "A to Z Networks",
     "Sniffix",
+    "Sreenidhi Soft",
     "Northwave",
     "Helio Labs",
     "Forma",
@@ -424,9 +447,9 @@ function Trust() {
   ];
   const metrics = [
     { label: "Revenue Growth", value: 312, suffix: "%" },
-    { label: "Leads Generated", value: 184000, suffix: "+" },
-    { label: "Systems Automated", value: 240, suffix: "" },
-    { label: "Businesses Scaled", value: 96, suffix: "" },
+    { label: "Leads Generated", value: 184500, suffix: "+" },
+    { label: "Business Tasks Automated with AI", value: 250, suffix: "+" },
+    { label: "Businesses Scaled", value: 96, suffix: "+" },
   ];
 
   return (
@@ -435,16 +458,12 @@ function Trust() {
         {/* — Header row — */}
         <div className="mb-10 sm:mb-12 md:mb-16 flex items-end justify-between flex-wrap gap-5 sm:gap-6">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">
-              / 01 — Trust
-            </div>
             <h2 className="bb-display mt-3 sm:mt-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl max-w-xl">
-              Proven Growth for Businesses That Refuse to Stand Still.
+              Our Track Record
             </h2>
           </div>
           <p className="bb-body max-w-sm text-sm sm:text-base">
-            The owners who scaled beyond their old limits all started in the same place. Here's
-            where they are now.
+            Here's what we've done for businesses like yours.
           </p>
         </div>
 
@@ -475,6 +494,20 @@ function Trust() {
             ))}
           </div>
         </div>
+
+        {/* — CTA — */}
+        <div className="mt-12 sm:mt-16 flex justify-center">
+          <MagneticButton onClick={onCTA}>
+            See How We Can Grow Your Business <ArrowUpRight className="h-4 w-4 ml-1.5 shrink-0" />
+          </MagneticButton>
+        </div>
+
+        {/* Future Section Placeholder: Hear from our customers */}
+        {/* <div className="mt-20">
+          <h3 className="bb-display text-2xl sm:text-3xl text-center mb-10">Hear from our customers</h3>
+          <p className="text-center text-[#f2f2e1]/50 text-sm">Scrolling videos section with thumbnail selector</p>
+          <p className="text-center text-[#f2f2e1]/50 text-sm mt-4">Scrolling images - what are the results we have achieved</p>
+        </div> */}
       </div>
     </Section>
   );
@@ -483,15 +516,15 @@ function Trust() {
 
 /* ------------- problem agitation ------------- */
 
-function Problem() {
+function Problem({ onCTA }: { onCTA: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
 
   const questions = [
-    "Does your competitor show up first, not you?",
-    "Do smaller rivals get found online before you do?",
-    "Why do new buyers find others, but not you?",
-    "Is a smaller name winning the leads that should be yours?",
+    "Does your competitors show up first,not you?",
+    "Do Smaller competitors get found online before you do ?",
+    "Why do new buyers find your competitors , but not you?",
+    "Is a smaller competitor winning leads that should be yours?",
     "When buyers search online, do they even find you?",
   ];
 
@@ -503,10 +536,11 @@ function Problem() {
       />
 
       <div ref={ref} className="mx-auto max-w-5xl px-5 sm:px-8 md:px-10 lg:px-6 text-center">
-        {/* — Section label — */}
-        <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80 mb-8 sm:mb-10 md:mb-12">
-          / 02 — Reality Check
-        </div>
+
+
+        <h2 className="bb-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-12 sm:mb-16 md:mb-20">
+          Ask Yourself This
+        </h2>
 
         {/* — Questions stack — */}
         <div className="space-y-7 sm:space-y-9 md:space-y-11 lg:space-y-12">
@@ -537,10 +571,17 @@ function Problem() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="bb-body mt-12 sm:mt-16 md:mt-20 text-base sm:text-lg max-w-2xl mx-auto px-2 sm:px-0"
+          className="bb-body mt-12 sm:mt-16 md:mt-20 text-base sm:text-lg max-w-2xl mx-auto px-2 sm:px-0 mb-10"
         >
           Does Any of This Sound Like Your Business? If You Said Yes to These, We Should Talk.
         </motion.p>
+
+        {/* — CTA — */}
+        <div className="flex justify-center">
+          <MagneticButton onClick={onCTA}>
+            I WANT TO FIX THIS <ArrowUpRight className="h-4 w-4 ml-1.5 shrink-0" />
+          </MagneticButton>
+        </div>
       </div>
     </Section>
   );
@@ -550,47 +591,95 @@ function Problem() {
 
 const services: any[] = [
   {
-    icon: Globe,
     tag: "01",
-    headline: "Websites That Sell, Not Just Sit",
-    sub: "We build fast, modern websites that make you look as strong online as you are in real life — and turn visitors into engaged leads.",
-    cta: "Explore",
+    headline: "Website Development",
+    sub: "A complete website stack that turns visitors into paying customers.",
+    features: [
+      "Website Development & Deployment",
+      "Website Speed Optimization",
+      "Custom CRM & Dashboard Development",
+      "Custom Software Development",
+      "AI Chat Bot Integration",
+      "Multiple Page Optimization",
+      "Mobile & Tablet Friendly Optimization",
+      "SEO Optimization",
+      "Persuasive Copywriting",
+      "Custom UTM Links",
+      "Traffic Tracking Pixel Integration"
+    ]
   },
   {
-    icon: TrendingUp,
     tag: "02",
-    headline: "A Steady Flow of Leads",
-    sub: "Stop waiting on referrals. We build a system that brings new inquiries to you every single month.",
-    cta: "Get Leads",
+    headline: "Leads & Sales Generation System",
+    sub: "A complete system that brings you new leads, every single month.",
+    features: [
+      "Cold Outreach System",
+      "Warm Outreach System",
+      "Paid Advertisement (Google/Meta)",
+      "Full Funnel Design & Development",
+      "Ad Creatives Production",
+      "WhatsApp Campaigns",
+      "Email Campaigns",
+      "Affiliate Systems for More Growth",
+      "Integration Marketing",
+      "Upsell / Cross-sell / Downsell Management",
+      "Full Tracking System"
+    ]
   },
   {
-    icon: Camera,
     tag: "03",
-    headline: "Content That Builds Trust",
-    sub: "We create and post content that keeps your brand active and respected — without you lifting a finger.",
-    cta: "See How",
+    headline: "Build Your Online Presence",
+    sub: "We build a content system that builds and maintains your online presence.",
+    features: [
+      "Social Media Account Handling",
+      "Content Research & Strategy",
+      "Customised Content Script Writing",
+      "Content Shooting",
+      "Content Editing",
+      "Omnichannel Management",
+      "Brand Storytelling",
+      "Personal Branding for Founders",
+      "Content Funnel Development",
+      "Influencer Collaboration Management",
+      "Online Reputation & Review Management"
+    ]
   },
   {
-    icon: Bot,
     tag: "04",
-    headline: "Automate the Busywork",
-    sub: "We set up smart systems that handle the repeat tasks — so your team escapes manual work and WhatsApp chaos.",
-    cta: "Automate",
+    headline: "AI Automations",
+    sub: "We automate your boring tasks, so you get more time for your family.",
+    features: [
+      "WhatsApp Communication Automation",
+      "Email Communication Automation",
+      "Complete Leads System Automation",
+      "Complete Sales System Automation",
+      "Logistical Automation (For Ecommerce Businesses)",
+      "Customer Service Automation",
+      "Invoice & Payment Reminder Automation",
+      "Appointment & Booking Automation",
+      "Data Entry & Reporting Automation",
+      "Internal Team Task Automation",
+      "Review & Feedback Collection Automation"
+    ]
   },
   {
-    icon: BarChart2,
     tag: "05",
-    headline: "Never Lose a Lead Again",
-    sub: "We build a system that tracks every inquiry and follows up on time — so more leads turn into real sales.",
-    cta: "Boost Sales",
-  },
-  {
-    icon: Star,
-    tag: "06",
-    headline: "From Legacy to Leadership",
-    sub: "We build a strong brand and the systems behind it — so your business doesn't just grow, it leads.",
-    cta: "Scale Up",
-  },
+    headline: "Founder Freedom System",
+    sub: "A system that lets your business run, grow, and even sell — without you.",
+    features: [
+      "SOPs Development",
+      "Sales Process Documentation",
+      "Team Training Systems",
+      "Hiring & Onboarding Systems",
+      "Decision Dashboards for Owners",
+      "Delegation Roadmap",
+      "Second-in-Command (Ops Manager) Hiring & Setup",
+      "Weekly Business Review System",
+      "Financial Systems & Cash Flow Tracking",
+      "Customer Complaint & Escalation System",
+      "Founder Exit Readiness Planning"
+    ]
+  }
 ];
 
 // ─── Hook: scroll direction ───────────────────────────────────────────────────
@@ -639,59 +728,34 @@ function ServiceCard({
   index,
   scrollDirection,
   onVisibilityChange,
+  onOpenModal,
 }: {
   s: any;
   index: number;
   scrollDirection: "down" | "up";
   onVisibilityChange: (index: number, visible: boolean) => void;
+  onOpenModal: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Generous margin so cards enter/exit one-by-one
   const isInView = useInView(ref, {
     margin: "-8% 0px -8% 0px",
     once: false,
   });
 
-  // Tilt state
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
   const [hovered, setHovered] = useState(false);
 
-  const Icon = s.icon;
-
-  // Staggered delay based on scroll direction
   const staggerDelay =
     scrollDirection === "down" ? index * 0.09 : (services.length - 1 - index) * 0.07;
 
-  // Report visibility to parent for progress dots
   useEffect(() => {
     onVisibilityChange(index, isInView);
   }, [isInView, index, onVisibilityChange]);
 
-  // 3D tilt on mouse move
-  const handleMouseMove = useCallback((e: any) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const cx = rect.width / 2;
-    const cy = rect.height / 2;
-    setTilt({
-      rx: ((y - cy) / cy) * 5,
-      ry: ((x - cx) / cx) * -5,
-    });
-  }, []);
-
-  const handleMouseLeave = () => {
-    setTilt({ rx: 0, ry: 0 });
-    setHovered(false);
-  };
-
   return (
     <motion.div
       ref={ref}
-      // Entrance/exit driven purely by scroll position
       initial={{ opacity: 0, y: 90, scale: 0.91 }}
       animate={
         isInView
@@ -703,116 +767,79 @@ function ServiceCard({
         delay: isInView ? staggerDelay : 0,
         ease: [0.22, 1, 0.36, 1],
       }}
-      // 3D hover tilt
-      style={{
-        perspective: 800,
-        willChange: "transform, opacity",
-      }}
+      style={{ willChange: "transform, opacity" }}
+      className="h-full snap-start flex flex-col"
     >
-      <motion.div
+      <div
         ref={cardRef}
-        onMouseMove={handleMouseMove}
         onMouseEnter={() => setHovered(true)}
-        onMouseLeave={handleMouseLeave}
-        animate={{
-          rotateX: hovered ? tilt.rx : 0,
-          rotateY: hovered ? tilt.ry : 0,
-          y: hovered ? -8 : 0,
-          scale: hovered ? 1.025 : 1,
-          boxShadow: hovered
-            ? "0 28px 56px rgba(198,242,8,0.09), 0 8px 20px rgba(0,0,0,0.45)"
-            : "0 0px 0px rgba(0,0,0,0)",
+        onMouseLeave={() => setHovered(false)}
+        className="group relative flex-1 flex flex-col overflow-hidden rounded-[2rem] bg-[#050505]/80 backdrop-blur-xl border border-[#c6f208]/20 hover:border-[#c6f208]/60 p-8 sm:p-10 transition-all duration-500 hover:shadow-[0_0_60px_rgba(198,242,8,0.15)] hover:-translate-y-2"
+        style={{
+          boxShadow: hovered 
+            ? "inset 0 2px 20px rgba(198,242,8,0.1), 0 0 40px rgba(198,242,8,0.15)" 
+            : "inset 0 1px 10px rgba(198,242,8,0.03)",
         }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="group relative overflow-hidden rounded-3xl bb-glass p-6 sm:p-8 md:p-10 cursor-pointer"
-        style={{ transformStyle: "preserve-3d", willChange: "transform" }}
-        data-cursor="hover"
       >
-        {/* Hover glow */}
-        <motion.div
-          animate={{ opacity: hovered ? 1 : 0 }}
-          transition={{ duration: 0.4 }}
-          className="absolute inset-0 bg-gradient-to-br from-[#c6f208]/10 via-transparent to-transparent pointer-events-none"
+        {/* Glow effect */}
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-[#c6f208]/5 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         />
-
-        {/* Shimmer top line */}
-        <motion.div
-          className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#c6f208]/70 to-transparent"
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={{ scaleX: hovered ? 1 : 0, opacity: hovered ? 1 : 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-        />
-
-        {/* Corner accent */}
-        <motion.div
-          className="absolute bottom-0 right-0 w-24 h-24 rounded-tl-full"
-          animate={{
-            background: hovered
-              ? "radial-gradient(circle at bottom right, rgba(198,242,8,0.07), transparent 70%)"
-              : "radial-gradient(circle at bottom right, transparent, transparent)",
-          }}
-          transition={{ duration: 0.5 }}
-        />
-
-        {/* Tag + Icon row */}
-        <div className="relative flex items-start justify-between mb-12">
-          <motion.div
-            className="text-xs uppercase tracking-[0.4em] text-[#c6f208]"
-            animate={{ opacity: hovered ? 1 : 0.8 }}
-            transition={{ duration: 0.3 }}
-          >
-            / {s.tag}
-          </motion.div>
-          <motion.div
-            animate={{
-              color: hovered ? "#c6f208" : "rgba(242,242,225,0.25)",
-              rotate: hovered ? 15 : 0,
-              scale: hovered ? 1.1 : 1,
-            }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Icon className="h-6 w-6" />
-          </motion.div>
-        </div>
+        
+        {/* Top highlight */}
+        <div className="absolute top-0 left-[20%] right-[20%] h-[1px] bg-gradient-to-r from-transparent via-[#c6f208] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         {/* Content */}
-        <h3 className="bb-display relative text-2xl md:text-3xl lg:text-[1.65rem] mb-4 leading-tight">
-          {s.headline}
-        </h3>
-        <p className="bb-body relative text-[#f2f2e1]/55 leading-relaxed text-sm md:text-base">
-          {s.sub}
-        </p>
+        <div className="text-center mb-8 relative">
+          <h3 className="bb-display text-3xl sm:text-4xl mb-3 leading-tight text-white font-semibold">
+            {s.headline}
+          </h3>
+          <p className="bb-body text-[#c6f208]/80 text-sm md:text-sm max-w-[280px] mx-auto">
+            {s.sub}
+          </p>
+        </div>
+
+        <div className="flex-1 flex flex-col items-center relative">
+          <div className="space-y-4 mb-10 text-left w-full max-w-[260px]">
+            {s.features.map((feature: string, i: number) => (
+              <div key={i} className="flex items-start gap-3">
+                <Check className="h-5 w-5 text-[#c6f208] shrink-0 mt-0.5" />
+                <span className="text-sm text-[#f2f2e1]/80">{feature}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* CTA */}
-        <motion.div
-          className="relative mt-10 flex items-center gap-2 text-xs uppercase tracking-[0.3em]"
-          animate={{ color: hovered ? "#c6f208" : "rgba(242,242,225,0.45)" }}
-          transition={{ duration: 0.3 }}
-        >
-          {s.cta}
-          <motion.div
-            animate={{
-              x: hovered ? 4 : 0,
-              y: hovered ? -4 : 0,
-            }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        <div className="relative mt-auto text-center flex justify-center w-full">
+          <button
+            onClick={onOpenModal}
+            className="w-full rounded-full bg-[#c6f208] px-10 py-4 text-xs font-bold uppercase tracking-widest text-[#050505] transition-all duration-300 hover:shadow-[0_0_20px_rgba(198,242,8,0.4)] hover:bg-white"
           >
-            <ArrowUpRight className="h-4 w-4" />
-          </motion.div>
-        </motion.div>
-      </motion.div>
+            Get Started
+          </button>
+        </div>
+      </div>
     </motion.div>
   );
 }
 
 // ─── Services Section ─────────────────────────────────────────────────────────
 
-export default function Services() {
+export default function Services({ onOpenModal }: { onOpenModal: () => void }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = window.innerWidth > 640 ? 432 : 344;
+      scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   const scrollDirection = useScrollDirection();
-  const [activeCards, setActiveCards] = useState<boolean[]>(new Array(6).fill(false));
+  const [activeCards, setActiveCards] = useState<boolean[]>(new Array(5).fill(false));
 
   const handleVisibilityChange = useCallback((index: number, visible: boolean) => {
     setActiveCards((prev) => {
@@ -869,22 +896,18 @@ export default function Services() {
               className="mb-16 sm:mb-20 lg:mb-24 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 sm:gap-8"
             >
               <div className="flex-1 min-w-0">
-                {/* Eyebrow */}
-                <motion.div
-                  initial={{ opacity: 0, x: -16 }}
-                  animate={headerInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
-                  transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80 mb-4"
-                >
-                  / 03 — Capabilities
-                </motion.div>
+                <div className="flex items-center justify-between w-full">
+
+                  
+
+                </div>
 
                 {/* Title with parallax */}
                 <motion.h2
                   style={{ y: titleY }}
                   className="bb-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl max-w-3xl leading-[1.05]"
                 >
-                  {"Everything You Need to Scale Your Business Beyond Limits."
+                  {"How We Help You Grow Your Business"
                     .split(" ")
                     .map((word, i) => (
                       <motion.span
@@ -910,25 +933,47 @@ export default function Services() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={headerInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                // className="bb-body max-w-xs sm:max-w-sm text-[#f2f2e1]/55 leading-relaxed text-sm md:text-base"
                 className="bb-body w-full sm:max-w-sm text-[#f2f2e1]/55 leading-relaxed text-sm md:text-base"
               >
-                From your website to your sales system, we build the full engine that brings your
-                business steady, lasting growth — under one roof.
+                We build your website, bring you leads, save you time, and grow your reputation among your customers.
               </motion.p>
             </motion.div>
 
-            {/* ── Cards Grid ── */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
-              {services.map((s, i) => (
-                <ServiceCard
-                  key={s.tag}
-                  s={s}
-                  index={i}
-                  scrollDirection={scrollDirection}
-                  onVisibilityChange={handleVisibilityChange}
-                />
-              ))}
+            {/* ── Cards Scroller ── */}
+            <div className="relative group/scroller">
+              <div 
+                ref={scrollRef}
+                className="grid grid-flow-col auto-cols-[320px] sm:auto-cols-[400px] overflow-x-auto snap-x snap-mandatory gap-6 sm:gap-8 pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                <style dangerouslySetInnerHTML={{__html: `div::-webkit-scrollbar { display: none; }`}} />
+                {services.map((s, i) => (
+                  <ServiceCard
+                    key={s.tag}
+                    s={s}
+                    index={i}
+                    scrollDirection={scrollDirection}
+                    onVisibilityChange={handleVisibilityChange}
+                    onOpenModal={onOpenModal}
+                  />
+                ))}
+              </div>
+              
+              {/* Floating Navigation Arrows */}
+              <button 
+                onClick={() => scroll('left')}
+                className="absolute left-0 sm:-left-4 lg:-left-12 top-1/2 -translate-y-1/2 z-10 p-3 sm:p-4 rounded-full border border-white/10 bg-[#050505]/80 backdrop-blur shadow-xl hover:border-[#c6f208]/50 hover:bg-[#c6f208]/10 transition-colors opacity-0 group-hover/scroller:opacity-100 hidden sm:block"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-6 h-6 text-white" />
+              </button>
+              <button 
+                onClick={() => scroll('right')}
+                className="absolute right-0 sm:-right-4 lg:-right-12 top-1/2 -translate-y-1/2 z-10 p-3 sm:p-4 rounded-full border border-white/10 bg-[#050505]/80 backdrop-blur shadow-xl hover:border-[#c6f208]/50 hover:bg-[#c6f208]/10 transition-colors opacity-0 group-hover/scroller:opacity-100 hidden sm:block"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-6 h-6 text-white" />
+              </button>
             </div>
           </div>
         </section>
@@ -1089,48 +1134,20 @@ function Method() {
 /* ------------- Why Beyond Business ------------- */
 
 function Why() {
-  const items = [
-    "We Build Systems, Not Campaigns.",
-    "Growth That Works Even While You Sleep.",
-    "AI-Powered Infrastructure.",
-    "Everything Works Together.",
-  ];
-
   return (
     <Section className="relative border-t border-white/5">
-      <div className="relative mx-auto max-w-5xl px-5 sm:px-8 lg:px-10 pt-16 sm:pt-24 pb-12 sm:pb-16">
-        {/* Eyebrow */}
-        <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">
-          / 05 — Why Businesses Choose Us?
-        </div>
+      <div className="relative mx-auto max-w-4xl px-5 sm:px-8 lg:px-10 pt-24 sm:pt-32 pb-24 sm:pb-32 text-center">
+
 
         {/* Headline */}
-        <h2 className="bb-display mt-4 sm:mt-5 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.08] max-w-4xl">
-          Most agencies chase startups and talk in jargon. We do the opposite. We speak business,
-          build systems, and stay for the long run.
-          <span className="text-[#c6f208]">™</span>
+        <h2 className="bb-display mt-4 sm:mt-5 text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.08]">
+          Why Businesses Want to Work With Us
         </h2>
 
-        {/* Items List */}
-        <div className="mt-10 sm:mt-14 lg:mt-16 grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/5 rounded-2xl overflow-hidden">
-          {items.map((item, i) => (
-            <div
-              key={i}
-              className="relative flex items-center gap-4 bg-[#0a0a0a] px-6 sm:px-8 py-5 sm:py-6 group"
-            >
-              {/* Left accent bar */}
-              <div className="shrink-0 w-px h-8 bg-[#c6f208]/60 group-hover:bg-[#c6f208] transition-colors duration-300" />
-
-              {/* Item number */}
-              <span className="text-[#c6f208]/40 text-[10px] uppercase tracking-[0.3em] shrink-0">
-                0{i + 1}
-              </span>
-
-              {/* Item text */}
-              <p className="bb-body text-sm sm:text-base text-[#f2f2e1]/80 leading-snug">{item}</p>
-            </div>
-          ))}
-        </div>
+        {/* Subtitle */}
+        <p className="bb-body mt-8 sm:mt-10 text-xl sm:text-2xl text-[#f2f2e1]/80 max-w-2xl mx-auto leading-relaxed">
+          We don't just grow your business. We free you from running it.
+        </p>
       </div>
     </Section>
   );
@@ -1140,7 +1157,7 @@ function Why() {
 
 function Founder() {
   return (
-    <Section id="founder" className="relative py-40 border-t border-white/5 overflow-hidden">
+    <Section id="about-us" className="relative py-40 border-t border-white/5 overflow-hidden">
       <div className="absolute inset-0 bb-aurora opacity-30" />
       <div className="relative mx-auto max-w-6xl px-6 grid md:grid-cols-2 gap-16 items-center">
         <motion.div
@@ -1415,78 +1432,107 @@ const faqs = [
 //   );
 // }
 
-/* ------------- Team ------------- */
+function TeamCard({ m }: { m: { name: string, role: string, bio: string, img: string } }) {
+  return (
+    <div className="team-flip-card relative aspect-square w-full cursor-pointer" style={{ perspective: "1000px" }}>
+      <div 
+        className="team-flip-inner relative w-full h-full transition-transform duration-700 ease-in-out" 
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        <style dangerouslySetInnerHTML={{__html: `
+          .team-flip-card:hover > .team-flip-inner { transform: rotateY(180deg); }
+          .team-flip-card:active > .team-flip-inner { transform: rotateY(180deg); }
+        `}} />
+        
+        {/* Front Face */}
+        <div 
+          className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a]"
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+        >
+          <div className="absolute inset-0 z-10 border border-white/5 rounded-2xl pointer-events-none" />
+          <img 
+            src={m.img} 
+            alt={m.name} 
+            className="w-full h-full object-cover grayscale"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+          <div className="absolute bottom-6 left-6 right-6">
+            <h3 className="bb-display text-2xl sm:text-3xl font-bold">{m.name}</h3>
+            <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-[#c6f208] mt-2 font-semibold">{m.role}</div>
+          </div>
+        </div>
+
+        {/* Back Face */}
+        <div 
+          className="absolute inset-0 rounded-2xl overflow-hidden border border-[#c6f208]/30 bg-[#050505] p-4 sm:p-6 md:p-8 flex flex-col items-center justify-center text-center shadow-[0_0_30px_rgba(198,242,8,0.1)]"
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+        >
+          <div className="absolute inset-0 bb-grid-bg opacity-10" />
+          <h3 className="bb-display text-2xl font-bold relative z-10">{m.name}</h3>
+          <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-[#c6f208] mt-2 font-semibold relative z-10">{m.role}</div>
+          <p className="bb-body text-xs sm:text-sm mt-4 sm:mt-6 text-[#f2f2e1]/80 leading-relaxed relative z-10">
+            {m.bio}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Team() {
   return (
-    <Section id="team" className="relative border-t border-white/5 py-12 sm:py-16 md:py-20 overflow-hidden">
+    <Section id="about-us" className="relative border-t border-white/5 py-16 sm:py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bb-aurora opacity-20" />
-      <div className="relative mx-auto max-w-5xl px-5 sm:px-8 lg:px-10">
-        {/* Eyebrow */}
-        <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">
-          / 06 — Team
-        </div>
-
+      <div className="relative mx-auto max-w-6xl px-5 sm:px-8 lg:px-10">
+        
         {/* Headline */}
-        <div className="mt-4 sm:mt-5 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <h2 className="bb-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.08] max-w-2xl">
-            The Minds Engineering Your Scale.
+        <div className="flex flex-col items-center justify-center text-center mb-16 sm:mb-20">
+          <h2 className="bb-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.08] max-w-4xl">
+            Team Behind Beyond Business
           </h2>
-          <p className="bb-body max-w-xs text-sm sm:text-base opacity-70">
-            A cohesive squad of engineers, developers, designers, and operators dedicated to building your future infrastructure.
-          </p>
         </div>
 
         {/* Team Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 mt-12 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
           {[
             {
-              name: "Srinadh",
-              role: "Founder — Vision, Leadership & Design Expert",
-              bio: "Srinadh is the driving force behind the company's vision and direction. He sees beyond day-to-day operations and focuses on where the business needs to go next. From identifying new opportunities to building strong teams and creating sustainable growth strategies, he ensures every part of the business moves with purpose. He brings together people, processes, and innovation to turn ideas into results, while making sure the company stays focused on delivering value to its clients and achieving long-term success.",
+              name: "Srinadh Reddy",
+              role: "Co-Founder",
+              bio: "Hey, I'm Srinadh Reddy, Co-Founder of Beyond Business. I've spent 5+ years turning brands into names people don't forget. I have only one goal: make sure your customers never forget you.",
               img: "/assets/srinadh.png",
             },
             {
-              name: "Sairam",
-              role: "Co-Founder — Business Growth  & Marketing Strategy",
-              bio: "Sairam does not just look at your ads and current situation. He looks at your whole business. He studies where the gaps are, builds a clear growth plan, and then puts the right people on the right problems. Strategy, marketing, operations — he connects all of it. And when the plan is ready, he makes sure the team executes it the right way.",
+              name: "Sairam Nayak",
+              role: "Co-Founder",
+              bio: 'Hi, I\'m Sairam Nayak, Co-Founder of Beyond Business. My friends call me "The Profit Guy" because I\'ve grown my own businesses at an average 1:24 ROAS—profitably. Now I bring that same approach to your business, helping you build stronger foundations, generate consistent leads, and capture a bigger share of your market.',
               img: "/assets/sr 2.png",
             },
             {
               name: "Uday",
-              role: "Full Stack Developer",
-              bio: "Uday has 10+ years of experience building websites and web applications that actually work — fast, smooth, and built to last. Custom development, animations, complex web apps — he handles it all. When the design is ready, Uday makes sure it comes to life exactly the way it was meant to.",
+              role: "Lead Developer",
+              bio: "Hi, I'm Uday. I've spent 10+ years writing code and leading teams that build things right the first time. From high-end websites to full product builds, my team and I make sure everything runs smoothly, so you can focus on your business—not your bugs.",
               img: "/assets/uday - teamate.jpeg",
             },
-          ].map((m, i) => (
-            <div key={m.name} className="flex flex-col group">
-              <div 
-                className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a]"
-                data-cursor="hover"
-              >
-                {/* Subtle overlay border */}
-                <div className="absolute inset-0 z-10 border border-white/5 rounded-2xl pointer-events-none" />
-                
-                <img 
-                  src={m.img} 
-                  alt={m.name} 
-                  className="w-full h-full object-cover grayscale scale-100 group-hover:scale-[1.04] transition-all duration-700 ease-out"
-                />
-
-                {/* Vignette shadow */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none" />
-              </div>
-
-              <h3 className="bb-display text-lg sm:text-xl font-bold mt-4">
-                {m.name}
-              </h3>
-              <div className="text-[9px] uppercase tracking-[0.2em] text-[#c6f208] mt-1 font-semibold">
-                {m.role}
-              </div>
-              <p className="bb-body text-xs mt-2 text-[#f2f2e1]/65 leading-relaxed">
-                {m.bio}
-              </p>
-            </div>
+            {
+              name: "Manideep",
+              role: "Creative Director",
+              bio: "Hi, I'm Manideep, Creative Director at Beyond Business. My camera has worked with brands like Pista House and Marluri Bakery. In a world where everyone's posting, I make sure your content is the one people actually remember.",
+              img: "/assets/mani.png",
+            },
+            {
+              name: "Harsha Reddy",
+              role: "Social Media Growth Manager",
+              bio: "Hi, I'm Harsha Reddy, Social Media Growth Manager at Beyond Business. I handle your social media accounts so your content goes out on time, every time. I know exactly when to post for the best chance of going viral, helping you stay consistent and visible without lifting a finger.",
+              img: "/assets/harsha.png",
+            },
+            {
+              name: "Maneesh Reddy",
+              role: "Customer Experience Manager",
+              bio: "Hi, I'm Maneesh Reddy, Customer Experience Manager at Beyond Business. I make sure every customer interaction leaves a lasting impression. That's how referrals and word-of-mouth happen naturally. I've already grown our own NPS score from 35 to 67, and I bring that same customer-first approach to your business.",
+              img: "/assets/maneesh.png",
+            },
+          ].map((m) => (
+            <TeamCard key={m.name} m={m} />
           ))}
         </div>
       </div>
@@ -1503,10 +1549,10 @@ function FAQ() {
       className="relative pt-12 sm:pt-16 md:pt-20 pb-28 sm:pb-32 md:pb-36 lg:pb-40 xl:pb-44 border-t border-white/5"
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80">/ 07 — FAQ</div>
+
 
         <h2 className="bb-display mt-5 md:mt-6 text-5xl md:text-7xl mb-10 md:mb-12 lg:mb-16">
-          Things founders ask.
+          Frequently Asked Questions by Business Owners
         </h2>
 
         <div className="space-y-4 md:space-y-5">
@@ -1647,12 +1693,12 @@ function FinalCTA({ onCTA }: { onCTA: () => void }) {
         ))}
 
         <motion.div style={{ scale, y }} className="relative mx-auto max-w-7xl px-6 text-center">
-          <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80 mb-8">
-            / 08 — Take The Leap
-          </div>
+          {/* <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208]/80 mb-8">
+            / 08 — Scale The Leap
+          </div> */}
 
           <h2 className="bb-display text-[clamp(2.4rem,10vw,9rem)] leading-[0.88]">
-            READY TO TAKE
+            READY TO SCALE
             <br />
             YOUR BUSINESS
             <br />
@@ -2145,19 +2191,202 @@ function ContactModal({ open, onClose }: { open: boolean; onClose: () => void })
   );
 }
 
+function PremiumServiceModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [formData, setFormData] = useState({ name: "", phone: "", business: "", email: "" });
+  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    
+    if (open) {
+      window.addEventListener("keydown", handleKeyDown);
+      setFormData({ name: "", phone: "", business: "", email: "" });
+      setStatus("idle");
+      setErrors({});
+    }
+    
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  const validate = () => {
+    const tempErrors: Record<string, string> = {};
+    if (!formData.name.trim()) tempErrors.name = "Name is required";
+    if (!formData.phone.trim()) {
+      tempErrors.phone = "Phone number is required";
+    } else if (!/^\+?[\d\s-]{10,}$/.test(formData.phone.trim())) {
+      tempErrors.phone = "Invalid phone format";
+    }
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    setStatus("submitting");
+
+    const formattedMessage = `Hello Beyond Business growth team!\n\n` +
+      `*Name*: ${formData.name}\n` +
+      `*Phone*: ${formData.phone}\n` +
+      (formData.business ? `*Business*: ${formData.business}\n` : "") +
+      (formData.email ? `*Email*: ${formData.email}` : "");
+
+    const whatsappUrl = `https://wa.me/919515884262?text=${encodeURIComponent(formattedMessage)}`;
+
+    setTimeout(() => {
+      setStatus("success");
+      window.open(whatsappUrl, "_blank");
+    }, 1200);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[9000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-md rounded-3xl bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 p-8 sm:p-10 text-center shadow-2xl"
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-5 right-5 p-2 text-white/40 hover:text-white transition-colors bg-white/5 rounded-full hover:bg-white/10"
+          aria-label="Close modal"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        {status === "success" ? (
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="py-8">
+            <div className="mx-auto w-16 h-16 rounded-full bg-[#c6f208]/10 flex items-center justify-center mb-6">
+              <Check className="h-8 w-8 text-[#c6f208]" />
+            </div>
+            <h3 className="bb-display text-2xl md:text-3xl">Talk to you soon!</h3>
+            <p className="bb-body mt-4 max-w-sm mx-auto text-sm sm:text-base text-white/60">
+              Your inquiry has been successfully transmitted. Our growth team will get back to you within 24 hours.
+            </p>
+            <button
+              onClick={onClose}
+              className="mt-8 rounded-full bg-[#c6f208] px-8 py-3 text-xs font-semibold uppercase tracking-widest text-[#050505] hover:bg-[#c6f208]/90 transition-colors w-full"
+            >
+              Close Window
+            </button>
+          </motion.div>
+        ) : (
+          <>
+            <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208] mb-3">Premium Service</div>
+            <h3 className="bb-display text-3xl sm:text-4xl mb-3">Get Started</h3>
+            <p className="bb-body text-xs sm:text-sm text-white/50 mb-8">
+              Fill in your details below and we will get back to you to map out your growth plan.
+            </p>
+
+            <form onSubmit={handleSubmit} className="space-y-5 text-left">
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.2em] text-[#f2f2e1]/50 mb-2 font-medium ml-1">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Aarav Mehta"
+                  className={`w-full bg-black/50 border ${errors.name ? "border-red-500" : "border-white/10"} focus:border-[#c6f208] rounded-2xl px-5 py-4 text-sm text-[#f2f2e1] outline-none transition-colors placeholder:text-white/20`}
+                />
+                {errors.name && <span className="text-red-500 text-[10px] mt-1.5 ml-1 block">{errors.name}</span>}
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.2em] text-[#f2f2e1]/50 mb-2 font-medium ml-1">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  placeholder="+91 99999 99999"
+                  className={`w-full bg-black/50 border ${errors.phone ? "border-red-500" : "border-white/10"} focus:border-[#c6f208] rounded-2xl px-5 py-4 text-sm text-[#f2f2e1] outline-none transition-colors placeholder:text-white/20`}
+                />
+                {errors.phone && <span className="text-red-500 text-[10px] mt-1.5 ml-1 block">{errors.phone}</span>}
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.2em] text-[#f2f2e1]/50 mb-2 font-medium ml-1">
+                  Business Name <span className="text-white/30 lowercase">(Optional)</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.business}
+                  onChange={(e) => setFormData({ ...formData, business: e.target.value })}
+                  placeholder="Your Company"
+                  className="w-full bg-black/50 border border-white/10 focus:border-[#c6f208] rounded-2xl px-5 py-4 text-sm text-[#f2f2e1] outline-none transition-colors placeholder:text-white/20"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.2em] text-[#f2f2e1]/50 mb-2 font-medium ml-1">
+                  Email Address <span className="text-white/30 lowercase">(Optional)</span>
+                </label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="you@company.com"
+                  className="w-full bg-black/50 border border-white/10 focus:border-[#c6f208] rounded-2xl px-5 py-4 text-sm text-[#f2f2e1] outline-none transition-colors placeholder:text-white/20"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={status === "submitting"}
+                  className="w-full text-center rounded-2xl bg-[#c6f208] py-4 text-xs font-bold uppercase tracking-widest text-[#050505] transition-all hover:shadow-[0_0_30px_rgba(198,242,8,0.3)] disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {status === "submitting" ? (
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                  ) : (
+                    <>
+                      <span>Book A Call</span>
+                      <ArrowUpRight className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
+
 /* ------------- Page composition ------------- */
 
 export function Site() {
-  const [open, setOpen] = useState(false);
+  const [premiumModalOpen, setPremiumModalOpen] = useState(false);
   return (
     <div className="relative bg-[#050505] text-[#f2f2e1]">
       <AnnouncementBar />
-      <Nav onCTA={() => setOpen(true)} />
+      <Nav onCTA={() => setPremiumModalOpen(true)} />
       <main>
-        <Hero onCTA={() => setOpen(true)} />
-        <Trust />
-        <Problem />
-        <Services />
+        <Hero onCTA={() => setPremiumModalOpen(true)} />
+        <Trust onCTA={() => setPremiumModalOpen(true)} />
+        <Problem onCTA={() => setPremiumModalOpen(true)} />
+        <Services onOpenModal={() => setPremiumModalOpen(true)} />
         <Method />
         <Why />
         <Team />
@@ -2165,10 +2394,10 @@ export function Site() {
         <Testimonials />
         <LeadMagnet /> */}
         <FAQ />
-        <FinalCTA onCTA={() => setOpen(true)} />
+        <FinalCTA onCTA={() => setPremiumModalOpen(true)} />
       </main>
       <Footer />
-      <ContactModal open={open} onClose={() => setOpen(false)} />
+      <PremiumServiceModal open={premiumModalOpen} onClose={() => setPremiumModalOpen(false)} />
     </div>
   );
 }
