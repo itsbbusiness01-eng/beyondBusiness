@@ -412,7 +412,7 @@ function Hero({ onCTA }: { onCTA: () => void }) {
 function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   const [n, setN] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -50px 0px" });
   useEffect(() => {
     if (!inView) return;
     const start = performance.now();
@@ -427,7 +427,7 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   }, [inView, to]);
   return (
     <span ref={ref}>
-      {n.toLocaleString()}
+      {n.toLocaleString('en-IN')}
       {suffix}
     </span>
   );
@@ -446,7 +446,7 @@ function Trust({ onCTA }: { onCTA: () => void }) {
     "Nimbus",
   ];
   const metrics = [
-    { label: "Revenue Growth", value: 312, suffix: "%" },
+    { label: "Average Revenue Growth", value: 312, suffix: "%" },
     { label: "Leads Generated", value: 184500, suffix: "+" },
     { label: "Business Tasks Automated with AI", value: 250, suffix: "+" },
     { label: "Businesses Scaled", value: 96, suffix: "+" },
