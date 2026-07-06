@@ -347,7 +347,7 @@ function Hero({ onCTA }: { onCTA: () => void }) {
             "px-2 sm:px-0",
           ].join(" ")}
         >
-          Learn from the team that has scaled a portfolio to over $250m+ in annual revenue.
+          Learn from the team that has scaled a portfolio to over 10cr+ in annual revenue.
         </motion.p>
 
         {/* — CTA buttons — */}
@@ -1534,7 +1534,7 @@ function Team() {
               name: "Maneesh Reddy",
               role: "Customer Experience Manager",
               bio: "Hi, I'm Maneesh Reddy, Customer Experience Manager at Beyond Business. I make sure every customer interaction leaves a lasting impression. That's how referrals and word-of-mouth happen naturally. I've already grown our own NPS score from 35 to 67, and I bring that same customer-first approach to your business.",
-              img: "/assets/maneesh.png",
+              img: "/assets/maneesh.jpeg",
             },
           ].map((m, i) => (
             <TeamCard key={m.name} m={m} index={i} />
