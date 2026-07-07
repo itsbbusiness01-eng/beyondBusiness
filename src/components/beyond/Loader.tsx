@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 
 export function Loader({ onDone }: { onDone: () => void }) {
   const [show, setShow] = useState(true);
+  const [isClient, setIsClient] = useState(false);
+
   useEffect(() => {
+    setIsClient(true);
     const t = setTimeout(() => {
       setShow(false);
       setTimeout(onDone, 800);
@@ -37,8 +40,8 @@ export function Loader({ onDone }: { onDone: () => void }) {
               key={i}
               className="absolute h-1 w-1 rounded-full bg-[#c6f208]"
               initial={{
-                x: (Math.random() - 0.5) * window.innerWidth * 0.7,
-                y: (Math.random() - 0.5) * window.innerHeight * 0.7,
+                x: typeof window !== "undefined" ? (Math.random() - 0.5) * window.innerWidth * 0.7 : 0,
+                y: typeof window !== "undefined" ? (Math.random() - 0.5) * window.innerHeight * 0.7 : 0,
                 opacity: 0,
               }}
               animate={{ opacity: [0, 0.9, 0], scale: [0, 1.5, 0] }}

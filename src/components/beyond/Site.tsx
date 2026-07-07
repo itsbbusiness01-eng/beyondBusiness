@@ -239,7 +239,7 @@ function Hero({ onCTA }: { onCTA: () => void }) {
   const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const blur = useTransform(scrollYProgress, [0, 1], ["0px", "12px"]);
+  const blur = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(12px)"]);
 
   const words1 = "DO YOU WANT".split(" ");
   const words2 = "TO SCALE".split(" ");
@@ -2232,24 +2232,33 @@ function PremiumServiceModal({ open, onClose }: { open: boolean; onClose: () => 
     return Object.keys(tempErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setStatus("submitting");
 
-    const formattedMessage = `Hello Beyond Business growth team!\n\n` +
-      `*Name*: ${formData.name}\n` +
-      `*Phone*: ${formData.phone}\n` +
-      (formData.business ? `*Business*: ${formData.business}\n` : "") +
-      (formData.email ? `*Email*: ${formData.email}` : "");
-
-    const whatsappUrl = `https://wa.me/919515884262?text=${encodeURIComponent(formattedMessage)}`;
-
-    setTimeout(() => {
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbwiLMcQ9YTXlcWjyv6s7NLBcKmJv8NF1juvr7aUATaAm6fJKgxd45OnBuCRtGCfiXW3/exec";
+    
+    try {
+      await fetch(scriptUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          fullName: formData.name,
+          phoneNumber: formData.phone,
+          businessName: formData.business,
+          emailAddress: formData.email
+        }),
+        mode: "no-cors"
+      });
       setStatus("success");
-      window.open(whatsappUrl, "_blank");
-    }, 1200);
+    } catch (error) {
+      console.error("Error submitting form", error);
+      setStatus("idle");
+    }
   };
 
   return (
