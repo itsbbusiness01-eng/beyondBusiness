@@ -441,6 +441,10 @@ function Trust({ onCTA }: { onCTA: () => void }) {
   const baseLogos = [
     <img key="sniffix" src="/assets/sniffix_logobg.png" alt="Sniffix" className="h-10 sm:h-12 object-contain opacity-50 hover:opacity-100 transition-opacity duration-300 brightness-0 invert" />,
     <img key="elevatech" src="/assets/elevatech_logob.png" alt="Elevatech" className="h-16 sm:h-24 lg:h-32 object-contain opacity-100 transition-opacity duration-300" />,
+    <img key="company1" src="/assets/company_logo (1).jpeg" alt="Company 1" className="h-24 sm:h-32 lg:h-48 object-contain opacity-70 hover:opacity-100 transition-opacity duration-300 invert mix-blend-lighten" />,
+    <img key="company2" src="/assets/company_logo (2).jpeg" alt="Company 2" className="h-24 sm:h-32 lg:h-48 object-contain opacity-70 hover:opacity-100 transition-opacity duration-300 invert mix-blend-lighten" />,
+    <img key="company3" src="/assets/company_logo (3).jpeg" alt="Company 3" className="h-24 sm:h-32 lg:h-48 object-contain opacity-70 hover:opacity-100 transition-opacity duration-300 invert mix-blend-lighten" />,
+    <img key="company4" src="/assets/company_logo (4).jpeg" alt="Company 4" className="h-24 sm:h-32 lg:h-48 object-contain opacity-70 hover:opacity-100 transition-opacity duration-300 invert mix-blend-lighten" />,
   ];
   const metrics = [
     { label: "Average Revenue Growth", value: 312, suffix: "%" },
@@ -1519,9 +1523,9 @@ function Team() {
               img: "/assets/uday - teamate.jpeg",
             },
             {
-              name: "Manideep",
+              name: "Akhil",
               role: "Creative Director",
-              bio: "Hi, I'm Manideep, Creative Director at Beyond Business. My camera has worked with brands like Pista House and Marluri Bakery. In a world where everyone's posting, I make sure your content is the one people actually remember.",
+              bio: "Hi, I'm Akhil, Creative Director at Beyond Business. My camera has worked with brands like Pista House and Marluri Bakery. In a world where everyone's posting, I make sure your content is the one people actually remember.",
               img: "/assets/mani.png",
             },
             {
@@ -2303,10 +2307,9 @@ function PremiumServiceModal({ open, onClose }: { open: boolean; onClose: () => 
           </motion.div>
         ) : (
           <>
-            <div className="text-[10px] uppercase tracking-[0.4em] text-[#c6f208] mb-3">Premium Service</div>
-            <h3 className="bb-display text-3xl sm:text-4xl mb-3">Get Started</h3>
+            <h3 className="bb-display text-3xl sm:text-4xl mb-3 mt-4">Want to Grow Your Business Faster?</h3>
             <p className="bb-body text-xs sm:text-sm text-white/50 mb-8">
-              Fill in your details below and we will get back to you to map out your growth plan.
+              Book a free growth call and discover how you can grow your business
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-5 text-left">
@@ -2340,7 +2343,7 @@ function PremiumServiceModal({ open, onClose }: { open: boolean; onClose: () => 
 
               <div>
                 <label className="block text-[10px] uppercase tracking-[0.2em] text-[#f2f2e1]/50 mb-2 font-medium ml-1">
-                  Business Name <span className="text-white/30 lowercase">(Optional)</span>
+                  Company Name
                 </label>
                 <input
                   type="text"
@@ -2353,7 +2356,7 @@ function PremiumServiceModal({ open, onClose }: { open: boolean; onClose: () => 
 
               <div>
                 <label className="block text-[10px] uppercase tracking-[0.2em] text-[#f2f2e1]/50 mb-2 font-medium ml-1">
-                  Email Address <span className="text-white/30 lowercase">(Optional)</span>
+                  Email Address
                 </label>
                 <input
                   type="email"
