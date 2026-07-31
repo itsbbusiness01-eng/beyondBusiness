@@ -1431,7 +1431,7 @@ const faqs = [
 //   );
 // }
 
-function TeamCard({ m, index }: { m: { name: string, role: string, bio: string, img: string }; index: number }) {
+function TeamCard({ m, index }: { m: { name: string, role: string, bio: string, img: string, objectPos?: string }; index: number }) {
   return (
     <div className="team-flip-card relative aspect-square w-full cursor-pointer" style={{ perspective: "1000px" }}>
       <div 
@@ -1462,7 +1462,7 @@ function TeamCard({ m, index }: { m: { name: string, role: string, bio: string, 
           <img 
             src={m.img} 
             alt={m.name} 
-            className="w-full h-full object-cover grayscale"
+            className={`w-full h-full object-cover grayscale ${m.objectPos || 'object-center'}`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
           <div className="absolute bottom-6 left-6 right-6">
@@ -1526,7 +1526,8 @@ function Team() {
               name: "Akhil",
               role: "Creative Director",
               bio: "Hi, I'm Akhil, Creative Director at Beyond Business. My camera has worked with brands like Pista House and Marluri Bakery. In a world where everyone's posting, I make sure your content is the one people actually remember.",
-              img: "/assets/mani.png",
+              img: "/assets/akhil.jpeg",
+              objectPos: "object-top",
             },
             {
               name: "Harsha Reddy",
