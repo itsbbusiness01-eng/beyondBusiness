@@ -1525,7 +1525,7 @@ function Team() {
             {
               name: "Akhil",
               role: "Creative Director",
-              bio: "Hi, I'm Akhil, Creative Director at Beyond Business. My camera has worked with brands like Pista House and Marluri Bakery. In a world where everyone's posting, I make sure your content is the one people actually remember.",
+              bio: "Hi, I'm Akhil, Creative Director at Beyond Business. My camera has worked with brands like Pista House and Marluce Bakery. In a world where everyone's posting, I make sure your content is the one people actually remember.",
               img: "/assets/akhil.jpeg",
               objectPos: "object-top",
             },
