@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useInView, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { ArrowUpRight, Sparkles, Zap, Cpu, Megaphone, Video, Bot, Plus, Minus, Globe, TrendingUp, Camera, BarChart2, Star, Menu, X, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 /* ------------- shared bits ------------- */
 
@@ -1865,20 +1866,32 @@ function Footer() {
               Studio
             </div>
             <ul className="space-y-3 bb-body">
-              {["Services", "Method", "Work", "Founder", "Careers"].map((l, i) => (
-                <li key={l}>
-                  <motion.a
-                    href="#"
-                    className="group text-sm text-white/50 hover:text-[#c6f208] transition-colors duration-200 flex items-center gap-0 hover:gap-3"
-                    data-cursor="hover"
+              {Object.entries({
+                "Services": "#",
+                "Method": "#",
+                "Work": "#",
+                "About Us": "/about",
+                "Contact Us": "/contact"
+              }).map(([label, href], i) => (
+                <li key={label}>
+                  <motion.div
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.15 + i * 0.05 }}
                   >
-                    <span className="inline-block w-0 group-hover:w-3 h-px bg-[#c6f208] transition-all duration-250 flex-shrink-0" />
-                    {l}
-                  </motion.a>
+                    {href.startsWith('/') ? (
+                      <Link to={href} className="group text-sm text-white/50 hover:text-[#c6f208] transition-colors duration-200 flex items-center gap-0 hover:gap-3" data-cursor="hover">
+                        <span className="inline-block w-0 group-hover:w-3 h-px bg-[#c6f208] transition-all duration-250 flex-shrink-0" />
+                        {label}
+                      </Link>
+                    ) : (
+                      <a href={href} className="group text-sm text-white/50 hover:text-[#c6f208] transition-colors duration-200 flex items-center gap-0 hover:gap-3" data-cursor="hover">
+                        <span className="inline-block w-0 group-hover:w-3 h-px bg-[#c6f208] transition-all duration-250 flex-shrink-0" />
+                        {label}
+                      </a>
+                    )}
+                  </motion.div>
                 </li>
               ))}
             </ul>
@@ -1993,8 +2006,15 @@ function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-8 pt-5 border-t border-white/[0.06] flex items-center justify-between bb-body text-[10px] uppercase tracking-[0.3em]">
+        <div className="mt-8 pt-5 border-t border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-4 bb-body text-[10px] uppercase tracking-[0.3em]">
           <span className="text-white/25">© {new Date().getFullYear()} Beyond Business</span>
+          
+          <div className="flex gap-4 text-white/25">
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
+            <Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link>
+          </div>
+
           <span className="flex items-center gap-2 text-white/25">
             <motion.span
               className="w-[5px] h-[5px] rounded-full bg-[#c6f208] flex-shrink-0"
